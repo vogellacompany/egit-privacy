@@ -14,5 +14,10 @@
 			<unit id="org.eclipse.jgit.feature.group" version="0.0.0"/>
 			<unit id="org.eclipse.jgit.archive" version="0.0.0"/>
 		</location>
+				<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<repository location="http://download.eclipse.org/e4/snapshots/org.eclipse.e4.tools/latest/"/>
+			<unit id="org.eclipse.e4.tools.model.spy.feature.feature.group" version="0.0.0"/>
+		</location>
+		
 	</locations>
 </target>
