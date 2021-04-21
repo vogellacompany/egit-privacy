@@ -15,5 +15,14 @@
             class="de.empri.devops.gitprivacy.preferences.PreferenceInitializer">
       </initializer>
    </extension>
+      <extension
+         id="dd.fragment"
+         point="org.eclipse.e4.workbench.model">
+      <fragment
+            apply="initial"
+            uri="fragment.e4xmi">
+      </fragment>
+   </extension>
+   
 
 </plugin>
