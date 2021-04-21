@@ -4,7 +4,8 @@ Bundle-Name: Gitprivacy
 Bundle-SymbolicName: de.empri.devops.gitprivacy;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.e4.ui.model.workbench;bundle-version="2.1.1000"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: de.empri.devops.gitprivacy
 Import-Package: javax.inject;version="1.0.0",
