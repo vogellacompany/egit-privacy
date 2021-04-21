@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Hook
+Bundle-SymbolicName: de.empri.devops.gitprivacy.hook
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: de.empri.devops.gitprivacy.hook
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Bundle: org.eclipse.jgit;bundle-version="5.11.0",
+ org.slf4j.api;bundle-version="1.7.30"
