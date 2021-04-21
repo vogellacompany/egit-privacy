@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature id="de.empri.devops.gitprivacy.feature">
+      <category name="git_privacy"/>
+   </feature>
+   <category-def name="git_privacy" label="Git Privacy"/>
+</site>
