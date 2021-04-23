@@ -23,6 +23,13 @@
             uri="fragment.e4xmi">
       </fragment>
    </extension>
+      <extension point="org.eclipse.ui.propertyPages">
+      <page
+            class="de.empri.devops.gitprivacy.preferences.GitPrivacyPage"
+            id="de.empri.devops.gitprivacy.preferences.GitPrivacyPage"
+            name="Git Privacy">
+      </page>
+   </extension>
    
 
 </plugin>

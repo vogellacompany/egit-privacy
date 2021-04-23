@@ -14,7 +14,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	@Override
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, FrameworkUtil.getBundle(this.getClass()).getSymbolicName());
-		store.setDefault(PreferenceConstants.P_BOOLEAN, true);
+		store.setDefault(PreferenceConstants.P_BOOLEAN, false);
 		store.setDefault(PreferenceConstants.P_CHOICE, "choice2");
 		store.setDefault(PreferenceConstants.P_STRING,
 				"Default value");
