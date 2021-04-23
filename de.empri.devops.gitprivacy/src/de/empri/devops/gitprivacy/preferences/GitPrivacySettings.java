@@ -2,9 +2,14 @@ package de.empri.devops.gitprivacy.preferences;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
@@ -38,6 +43,8 @@ public class GitPrivacySettings
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage {
 
+	private List<BooleanFieldEditor> repoBooleans;
+
 	public GitPrivacySettings() {
 		super(GRID);
 		setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, FrameworkUtil.getBundle(this.getClass()).getSymbolicName())); //$NON-NLS-1$
@@ -57,9 +64,12 @@ public class GitPrivacySettings
 		String string = scopedPreferenceStore.getString("GitRepositoriesView.GitDirectories");
 		System.out.println(string);
 		String[] split = string.split(":");
+		repoBooleans = new ArrayList<>(split.length);
 		for (String s : split) {
-			addField(new BooleanFieldEditor(PreferenceConstants.P_BOOLEAN, s,
-					getFieldEditorParent()));
+			BooleanFieldEditor editor = new BooleanFieldEditor(PreferenceConstants.P_BOOLEAN, s,
+					getFieldEditorParent());
+			addField(editor);
+			repoBooleans.add(editor);
 		}
 
 		addField(new DirectoryFieldEditor(PreferenceConstants.P_PATH, 
@@ -88,16 +98,32 @@ public class GitPrivacySettings
 	@Override
 	public boolean performOk() {
 		super.performOk();
-		Bundle bundle = FrameworkUtil.getBundle(this.getClass());
-		Path path = new Path("");
-		URL fileURL = FileLocator.find(bundle, path, null);
-		File output = new File("/home/vogella/git/hooktesting/.git/hooks/post-commit2");
-		try {
-			BufferedInputStream bufferedInputStream = new BufferedInputStream(fileURL.openStream());
-			bufferedInputStream.transferTo(new FileOutputStream(output));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
+		repoBooleans.stream().filter(BooleanFieldEditor::getBooleanValue).forEach(editor -> {
+			Bundle bundle = FrameworkUtil.getBundle(this.getClass());
+			Path path = new Path("");
+			URL fileURL = FileLocator.find(bundle, path, null);
+			System.out.println("### fileURL: " + fileURL);
+			try {
+				URL pluginURL = FileLocator.resolve(bundle.getEntry("/"));
+				System.out.println("### pluginURL: " + pluginURL);
+				String trimmedPath = pluginURL.getPath().trim();
+				System.out.println("### trimmedPath: " + trimmedPath);
+				URI uri = pluginURL.toURI();
+				System.out.println("### uri: " + uri);
+				String externalForm = pluginURL.toExternalForm();
+				System.out.println("### externalForm: " + externalForm);
+//			File output = new File("/home/vogella/git/hooktesting/.git/hooks/post-commit2");
+			File output = new File(editor.getLabelText() + "/hooks/post-commit");
+				// TODO(FAP): this works, but now we also need to change the jar file name from
+				// settings to the hook plug-in
+				BufferedInputStream bufferedInputStream = new BufferedInputStream(
+						new FileInputStream(new File(new URI(trimmedPath.substring(0, trimmedPath.length() - 2)))));
+				bufferedInputStream.transferTo(new FileOutputStream(output));
+			} catch (IOException | URISyntaxException e) {
+				e.printStackTrace();
+			}
+		});
 
 		return true;
 	}
