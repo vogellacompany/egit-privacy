@@ -9,7 +9,12 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jgit;bundle-version="5.11.0",
  org.eclipse.swt,
  org.eclipse.jface,
- org.eclipse.egit.ui;bundle-version="5.11.0"
+ org.eclipse.egit.ui;bundle-version="5.11.0",
+ org.eclipse.team.ui,
+ slf4j.api;bundle-version="2.0.0",
+ com.sun.jna;bundle-version="5.8.0",
+ resource-loader;bundle-version="2.0.1",
+ lazysodium-java;bundle-version="5.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: de.empri.devops.gitprivacy
 Import-Package: javax.inject;version="1.0.0",
