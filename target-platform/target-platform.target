@@ -18,6 +18,11 @@
 			<repository location="http://download.eclipse.org/e4/snapshots/org.eclipse.e4.tools/latest/"/>
 			<unit id="org.eclipse.e4.tools.model.spy.feature.feature.group" version="0.0.0"/>
 		</location>
-		
+		<location includeDependencyScope="compile" includeSource="true" missingManifest="generate" type="Maven">
+			<groupId>com.goterl</groupId>
+			<artifactId>lazysodium-java</artifactId>
+			<version>5.0.1</version>
+			<type>jar</type>
+		</location>
 	</locations>
 </target>
