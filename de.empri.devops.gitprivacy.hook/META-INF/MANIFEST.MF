@@ -7,3 +7,5 @@ Automatic-Module-Name: de.empri.devops.gitprivacy.hook
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.jgit;bundle-version="5.11.0",
  org.slf4j.api;bundle-version="1.7.30"
+Main-Class: de.empri.devops.gitprivacy.hook.MainTest
+Class-Path: .
