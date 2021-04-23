@@ -74,7 +74,6 @@
 	<modules>
 		<module>target-platform</module>
 		<module>updatesite</module>
-		<module>de.empri.devops.gitprivacy.hook</module>
 		<module>de.empri.devops.gitprivacy</module>
 		<module>de.empri.devops.gitprivacy.feature</module>
 	</modules>
