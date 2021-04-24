@@ -43,3 +43,7 @@ hs_err_pid*
 .polyglot..META-INF_MANIFEST.MF
 .polyglot.META-INF
 
+
+!lazysodium-updatesite/*
+!lazysodium-updatesite/**/*
+
