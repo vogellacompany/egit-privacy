@@ -6,10 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
-import javax.inject.Inject;
-
 import org.eclipse.core.runtime.Adapters;
-import org.eclipse.e4.core.services.nls.Translation;
 import org.eclipse.egit.ui.Activator;
 import org.eclipse.egit.ui.internal.SWTUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -27,7 +24,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.dialogs.PropertyPage;
 
-import de.empri.devops.gitprivacy.preferences.messages.Messages;
 import de.empri.devops.gitprivacy.preferences.shared.Crypto;
 import de.empri.devops.gitprivacy.preferences.shared.GitPrivacyConfigReader;
 import de.empri.devops.gitprivacy.preferences.shared.ManagesKeyStorage;
@@ -46,10 +42,6 @@ public class GitPrivacyPage extends PropertyPage {
 
 	private MessageDialog eclipseDialog;
 	
-	@Inject
-	@Translation
-	Messages messages;
-
 	@Override
 	protected Control createContents(Composite parent) {
 		Composite composite = SWTUtils.createHVFillComposite(parent,
@@ -73,7 +65,7 @@ public class GitPrivacyPage extends PropertyPage {
 		// TODO(FAP): should listen to key creation for button text change
 		Button initKeyButton = new Button(composite, SWT.NONE);
 		if (currentKeyExists) {
-			initKeyButton.setText(messages.GitPrivacyPage_ReplaceKeyButton_Text);
+			initKeyButton.setText(UIText.GitPrivacyPage_ReplaceKeyButton_Text);
 			initKeyButton.addSelectionListener(widgetSelectedAdapter(e -> {
 				try {
 					String key = Crypto.generateKey();
@@ -83,11 +75,11 @@ public class GitPrivacyPage extends PropertyPage {
 				}
 			}));
 		} else {
-			initKeyButton.setText(messages.GitPrivacyPage_GenerateKeyButton_Text);
+			initKeyButton.setText(UIText.GitPrivacyPage_GenerateKeyButton_Text);
 			initKeyButton.addSelectionListener(widgetSelectedAdapter(e -> {
 				try {
 					managesKeyStorage.store(Crypto.generateKey());
-					initKeyButton.setText(messages.GitPrivacyPage_ReplaceKeyButton_Text);
+					initKeyButton.setText(UIText.GitPrivacyPage_ReplaceKeyButton_Text);
 				} catch (IOException ex) {
 					Activator.handleError(ex.getMessage(), ex, true);
 				}
@@ -97,7 +89,7 @@ public class GitPrivacyPage extends PropertyPage {
 
 		Button copyCurrentKeyButton = new Button(composite, SWT.NONE);
 		clipboard = new Clipboard(parent.getDisplay());
-		copyCurrentKeyButton.setText(messages.GitPrivacyPage_CopyCurrentKeyButton_Text);
+		copyCurrentKeyButton.setText(UIText.GitPrivacyPage_CopyCurrentKeyButton_Text);
 		copyCurrentKeyButton.setLayoutData(buttonLayoutData);
 		copyCurrentKeyButton.addSelectionListener(widgetSelectedAdapter(e -> {
 			Optional<String> keyOptional = managesKeyStorage.readCurrentKey();
@@ -115,7 +107,7 @@ public class GitPrivacyPage extends PropertyPage {
 		IPreferenceStore preferenceStore = Activator.getDefault()
 				.getPreferenceStore();
 		Button migrateButton = new Button(composite, SWT.NONE);
-		migrateButton.setText(messages.GitPrivacyPage_MigrateFromPasswordButton_Text);
+		migrateButton.setText(UIText.GitPrivacyPage_MigrateFromPasswordButton_Text);
 		migrateButton.setLayoutData(buttonLayoutData);
 		migrateButton.addSelectionListener(widgetSelectedAdapter(e -> {
 			passwordToKeyMigration.migrate(config, managesKeyStorage,
@@ -125,7 +117,7 @@ public class GitPrivacyPage extends PropertyPage {
 				passwordToKeyMigration.canMigrate(config, preferenceStore));
 
 		Button openKeyDirectoryButton = new Button(composite, SWT.NONE);
-		openKeyDirectoryButton.setText(messages.GitPrivacyPage_OpenKeyDirectoryButton_Text);
+		openKeyDirectoryButton.setText(UIText.GitPrivacyPage_OpenKeyDirectoryButton_Text);
 		openKeyDirectoryButton.setLayoutData(buttonLayoutData);
 		openKeyDirectoryButton
 				.addSelectionListener(widgetSelectedAdapter(e -> {
