@@ -6,18 +6,19 @@
     </elements>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_fW12kIrOEeW7h_qdP9N9fw" featurename="handlers" parentElementId="xpath:/">
-    <elements xsi:type="commands:Handler" xmi:id="_k2L0IIrOEeW7h_qdP9N9fw" elementId="org.eclipse.pde.ui.templates.handler.0" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.ShowRealGitDatesHandler" command="_UCYfwIrOEeW7h_qdP9N9fw">
+    <elements xsi:type="commands:Handler" xmi:id="_k2L0IIrOEeW7h_qdP9N9fw" elementId="de.empri.devops.gitprivacy.handler.0" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.ShowRealGitDatesToolbarHandler" command="_UCYfwIrOEeW7h_qdP9N9fw">
       <persistedState key="persistState" value="false"/>
     </elements>
+    <elements xsi:type="commands:Handler" xmi:id="_Hqq9MKVDEeuR5c0A_TIKWQ" elementId="de.empri.devops.gitprivacy.handler.1" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.ShowRealGitDatesMenuHandler"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_u7mfYKKlEeuyN8YqPFRFww" featurename="toolBarContributions" parentElementId="xpath:/">
     <elements xsi:type="menu:ToolBarContribution" xmi:id="_yA9t0KKlEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.toolbarcontribution.0" parentId="org.eclipse.team.ui.GenericHistoryView">
-      <children xsi:type="menu:DirectToolItem" xmi:id="_zGaS8KKlEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.directtoolitem.fabianwarhier" label="Fabian war hier" iconURI="platform:/plugin/de.empri.devops.gitprivacy/icons/Sample.png" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.ShowRealGitDatesHandler"/>
+      <children xsi:type="menu:DirectToolItem" xmi:id="_zGaS8KKlEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.directtoolitem.fabianwarhier" label="Fabian war hier" iconURI="platform:/plugin/de.empri.devops.gitprivacy/icons/Sample.png" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.ShowRealGitDatesToolbarHandler"/>
     </elements>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_yBVr0KKmEeuyN8YqPFRFww" featurename="menuContributions" parentElementId="xpath:/">
     <elements xsi:type="menu:MenuContribution" xmi:id="_1ywvAKKmEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.menucontribution.0" positionInParent="last" parentId="org.eclipse.egit.ui.historyPageContributions">
-      <children xsi:type="menu:DirectMenuItem" xmi:id="_7mlu0KKmEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.directmenuitem.fabian" label="Fabian" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.ShowRealGitDatesHandler">
+      <children xsi:type="menu:DirectMenuItem" xmi:id="_7mlu0KKmEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.directmenuitem.fabian" label="Fabian" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.ShowRealGitDatesMenuHandler">
         <persistedState key="persistState" value="false"/>
       </children>
     </elements>
