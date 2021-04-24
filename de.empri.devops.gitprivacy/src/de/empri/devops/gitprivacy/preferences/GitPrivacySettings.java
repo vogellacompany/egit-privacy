@@ -2,17 +2,11 @@ package de.empri.devops.gitprivacy.preferences;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
@@ -22,8 +16,8 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
+
 
 /**
  * This class represents a preference page that
@@ -100,32 +94,26 @@ public class GitPrivacySettings
 		super.performOk();
 		
 		repoBooleans.stream().filter(BooleanFieldEditor::getBooleanValue).forEach(editor -> {
-			Bundle bundle = FrameworkUtil.getBundle(this.getClass());
-			Path path = new Path("");
-			URL fileURL = FileLocator.find(bundle, path, null);
-			System.out.println("### fileURL: " + fileURL);
-			try {
-				URL pluginURL = FileLocator.resolve(bundle.getEntry("/"));
-				System.out.println("### pluginURL: " + pluginURL);
-				String trimmedPath = pluginURL.getPath().trim();
-				System.out.println("### trimmedPath: " + trimmedPath);
-				URI uri = pluginURL.toURI();
-				System.out.println("### uri: " + uri);
-				String externalForm = pluginURL.toExternalForm();
-				System.out.println("### externalForm: " + externalForm);
-//			File output = new File("/home/vogella/git/hooktesting/.git/hooks/post-commit2");
-			File output = new File(editor.getLabelText() + "/hooks/post-commit");
-				// TODO(FAP): this works, but now we also need to change the jar file name from
-				// settings to the hook plug-in
-				BufferedInputStream bufferedInputStream = new BufferedInputStream(
-						new FileInputStream(new File(new URI(trimmedPath.substring(0, trimmedPath.length() - 2)))));
-				bufferedInputStream.transferTo(new FileOutputStream(output));
-			} catch (IOException | URISyntaxException e) {
-				e.printStackTrace();
-			}
+			String repoPath = editor.getLabelText();
+			// TODO(FAP): check if post-commit file already exist and ask via dialog if it should be overwritten?
+			File jar = new File(repoPath + "/hooks/post-commit-hook.jar");
+			writeToDisk(jar, "/resources/post-commit-hook.jar");
+			File hook = new File(repoPath + "/hooks/post-commit");
+			writeToDisk(hook, "/resources/post-commit");
+			hook.setExecutable(true);
 		});
 
 		return true;
+	}
+
+	private void writeToDisk(File output, String resource) {
+		try (BufferedInputStream bis = new BufferedInputStream(getClass().getResourceAsStream(resource))) {
+			try (FileOutputStream fos = new FileOutputStream(output)) {
+				bis.transferTo(fos);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
