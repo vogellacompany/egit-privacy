@@ -101,6 +101,7 @@ public class GitPrivacySettings
 			File hook = new File(repoPath + "/hooks/post-commit");
 			writeToDisk(hook, "/resources/post-commit");
 			hook.setExecutable(true);
+			// TODO(FAP): add default git config if not already there?
 		});
 
 		return true;
