@@ -1,4 +1,4 @@
-package de.empri.devops.gitprivacy.hook;
+package de.empri.devops.gitprivacy.hook.shared;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
@@ -13,9 +13,6 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import de.empri.devops.gitprivacy.hook.shared.Crypto;
-import de.empri.devops.gitprivacy.hook.shared.ManagesKeyStorage;
 
 /**
  * Encodes and decodes the original commit date to a commit message.

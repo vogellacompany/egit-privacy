@@ -16,6 +16,7 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import de.empri.devops.gitprivacy.hook.ProvidesCommitDate.CommitDateResult;
 import de.empri.devops.gitprivacy.hook.shared.Crypto;
 import de.empri.devops.gitprivacy.hook.shared.ManagesKeyStorage;
+import de.empri.devops.gitprivacy.hook.shared.OriginalCommitDateEncoder;
 
 public class MainTest {
 	private static final ProvidesCommitDate PROVIDES_COMMIT_DATE = new ProvidesCommitDate();
