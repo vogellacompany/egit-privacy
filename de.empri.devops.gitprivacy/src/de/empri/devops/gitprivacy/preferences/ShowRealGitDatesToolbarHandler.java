@@ -1,9 +1,10 @@
 package de.empri.devops.gitprivacy.preferences;
 
+import java.util.Optional;
+
 import javax.inject.Named;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.egit.core.internal.IRepositoryCommit;
@@ -24,20 +25,29 @@ public class ShowRealGitDatesToolbarHandler {
 
 	@Execute
 	public void execute(@Named(IServiceConstants.ACTIVE_SHELL) Shell s,
-			@Optional @Named(IServiceConstants.ACTIVE_SELECTION) Object o, MPart part) {
+			@org.eclipse.e4.core.di.annotations.Optional @Named(IServiceConstants.ACTIVE_SELECTION) Object o,
+			MPart part) {
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~");
 //		MessageDialog.openInformation(s, "E4 Information Dialog", "Hello world from a pure Eclipse 4 plug-in");
 		System.out.println(o);
-		if (o instanceof StructuredSelection) {
-			StructuredSelection sel = (StructuredSelection) o;
-			if (sel.getFirstElement() instanceof IRepositoryCommit) {
-				IRepositoryCommit commit = (IRepositoryCommit) sel.getFirstElement();
-				Repository repository = commit.getRepository();
-				System.out.println("from selection:");
-				System.out.println(repository);
-			}
+		Optional<Repository> optionalRepository = extractRepository(o);
+		if (optionalRepository.isPresent()) {
+			new ShowOriginalCommitDatesDialog(s, optionalRepository.get()).open();
 		}
-		Object widget = part.getWidget();
+
+
+	}
+
+	private Optional<Repository> extractRepository(Object o) {
+		Optional<Repository> repositoryOptional = extractRepositoryFromSelection(o);
+		if (repositoryOptional.isPresent()) {
+			return repositoryOptional;
+		} else {
+			return extractRepositoryFromActivePart();
+		}
+	}
+
+	private Optional<Repository> extractRepositoryFromActivePart() {
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		IWorkbenchPart activePart = activePage.getActivePart();
 		if (activePart instanceof IHistoryView) {
@@ -45,13 +55,21 @@ public class ShowRealGitDatesToolbarHandler {
 			IHistoryPage gitHistoryPage = genericHistoryView.getHistoryPage();
 			if (gitHistoryPage != null && gitHistoryPage.getInput() instanceof HistoryPageInput) {
 					HistoryPageInput historyPageInput = (HistoryPageInput) gitHistoryPage.getInput();
-					Repository repository = historyPageInput.getRepository();
-					System.out.println("from page:");
-					System.out.println(repository);
-					System.out.println(repository.getDirectory());
+					return Optional.of(historyPageInput.getRepository());
 			}
 		}
+		return Optional.empty();
 	}
 
+	private Optional<Repository> extractRepositoryFromSelection(Object o) {
+		if (o instanceof StructuredSelection) {
+			StructuredSelection sel = (StructuredSelection) o;
+			if (sel.getFirstElement() instanceof IRepositoryCommit) {
+				IRepositoryCommit commit = (IRepositoryCommit) sel.getFirstElement();
+				return Optional.of(commit.getRepository());
+			}
+		}
+		return Optional.empty();
+	}
 
 }
