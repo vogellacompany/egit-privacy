@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_BxaXACerEeWxCPrV0pAZQQ">
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_BxaXACerEeWxCPrV0pAZQQ">
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_QqSikIrOEeW7h_qdP9N9fw" featurename="commands" parentElementId="xpath:/">
     <elements xsi:type="commands:Command" xmi:id="_UCYfwIrOEeW7h_qdP9N9fw" elementId="test.handler.helloWorldCommand" commandName="Hello World">
       <persistedState key="persistState" value="false"/>
@@ -18,8 +18,9 @@
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_yBVr0KKmEeuyN8YqPFRFww" featurename="menuContributions" parentElementId="xpath:/">
     <elements xsi:type="menu:MenuContribution" xmi:id="_1ywvAKKmEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.menucontribution.0" positionInParent="last" parentId="org.eclipse.egit.ui.historyPageContributions">
-      <children xsi:type="menu:DirectMenuItem" xmi:id="_7mlu0KKmEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.directmenuitem.fabian" label="Fabian" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.ShowRealGitDatesMenuHandler">
+      <children xsi:type="menu:DirectMenuItem" xmi:id="_7mlu0KKmEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.directmenuitem.original_dates" label="Show original dates" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.ShowRealGitDatesMenuHandler">
         <persistedState key="persistState" value="false"/>
+        <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_fAcaIKdOEeu98-EIyFPHtg" coreExpressionId="de.empri.devops.gitprivacy.githistory.menucontribution.visible"/>
       </children>
     </elements>
   </fragments>

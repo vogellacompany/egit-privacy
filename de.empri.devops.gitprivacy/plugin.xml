@@ -23,13 +23,39 @@
             uri="fragment.e4xmi">
       </fragment>
    </extension>
-      <extension point="org.eclipse.ui.propertyPages">
+   <extension point="org.eclipse.ui.propertyPages">
       <page
             class="de.empri.devops.gitprivacy.preferences.GitPrivacyPage"
             id="de.empri.devops.gitprivacy.preferences.GitPrivacyPage"
             name="Git Privacy">
       </page>
    </extension>
-   
+   <extension point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+         class="de.empri.devops.gitprivacy.preferences.CommitHasEncryptedDatesPropertyTester"
+         id="de.empri.devops.gitprivacy.CommitHasEncryptedDatesTester"
+         namespace="GitHistorySelection"
+         properties="hasEncryptedDates"
+         type="org.eclipse.egit.core.internal.IRepositoryCommit">
+      </propertyTester>
+   </extension>
+   <extension point="org.eclipse.core.expressions.definitions">
+      <definition id="de.empri.devops.gitprivacy.githistory.menucontribution.visible">
+         <with variable="selection">
+            <and>
+               <count value="1" />
+               <instanceof value="org.eclipse.jface.viewers.StructuredSelection" />
+               <iterate ifEmpty="false">
+                  <and>
+                     <instanceof value="org.eclipse.egit.core.internal.IRepositoryCommit" />
+	                 <adapt type="org.eclipse.egit.core.internal.IRepositoryCommit">
+	                    <test property="GitHistorySelection.hasEncryptedDates" />
+	                 </adapt>
+	              </and>
+               </iterate>
+         </and>
+         </with>
+      </definition>
+   </extension>
 
 </plugin>
