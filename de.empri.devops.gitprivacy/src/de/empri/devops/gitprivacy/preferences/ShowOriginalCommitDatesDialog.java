@@ -12,12 +12,15 @@ import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.window.ToolTip;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -97,6 +100,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 	}
 
 	private void createColumns(Composite main, TableViewer viewer) {
+		ColumnViewerToolTipSupport.enableFor(viewer, ToolTip.NO_RECREATE);
 		String[] titles = { "Id", "Message", "Author", "Authored Date", "Commiter", "Committed Date" };
 
 		// TODO(FAP): see CommitLabelProvider#getColumnText, CommitGraphTable#createColumns
@@ -110,6 +114,12 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
                 RevCommit r = (RevCommit) element;
 				return r.getId().abbreviate(SHORT_OBJECT_ID_LENGTH).name();
             }
+
+			@Override
+			public String getToolTipText(Object element) {
+				RevCommit r = (RevCommit) element;
+				return r.getName() + '\n' + r.getShortMessage();
+			}
         });
 
 		col = createTableViewerColumn(titles[1]);
@@ -120,6 +130,12 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
             	RevCommit r = (RevCommit) element;
                 return r.getShortMessage();
             }
+
+			@Override
+			public String getToolTipText(Object element) {
+				RevCommit r = (RevCommit) element;
+				return r.getShortMessage();
+			}
         });
 
 		col = createTableViewerColumn(titles[2]);
@@ -130,19 +146,32 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 				RevCommit r = (RevCommit) element;
 				return r.getAuthorIdent().getName();
             }
+
+			@Override
+			public String getToolTipText(Object element) {
+				RevCommit r = (RevCommit) element;
+				PersonIdent authorIdent = r.getAuthorIdent();
+				return authorIdent.getName() + " <" + authorIdent.getEmailAddress() + ">";
+			}
         });
 
 		// EGit also has org.eclipse.egit.ui.internal.PreferenceBasedDateFormatter.java
-		GitDateFormatter gitDateFormatter = new GitDateFormatter(GitDateFormatter.Format.RELATIVE);
+		GitDateFormatter relativeDateFormatter = new GitDateFormatter(GitDateFormatter.Format.RELATIVE);
+		GitDateFormatter isoDateFormatter = new GitDateFormatter(GitDateFormatter.Format.ISO);
 		col = createTableViewerColumn(titles[3]);
 		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
 				RevCommit r = (RevCommit) element;
-				return gitDateFormatter.formatDate(r.getAuthorIdent());
-            }
+				return relativeDateFormatter.formatDate(r.getAuthorIdent());
+			}
 
+			@Override
+			public String getToolTipText(Object element) {
+				RevCommit r = (RevCommit) element;
+				return isoDateFormatter.formatDate(r.getAuthorIdent());
+            }
         });
 
 		col = createTableViewerColumn(titles[3]);
@@ -153,6 +182,13 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 				RevCommit r = (RevCommit) element;
 				return r.getCommitterIdent().getName();
 			}
+
+			@Override
+			public String getToolTipText(Object element) {
+				RevCommit r = (RevCommit) element;
+				PersonIdent comiterIdent = r.getCommitterIdent();
+				return comiterIdent.getName() + " <" + comiterIdent.getEmailAddress() + ">";
+			}
 		});
 
 		col = createTableViewerColumn(titles[4]);
@@ -161,9 +197,14 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 			@Override
 			public String getText(Object element) {
 				RevCommit r = (RevCommit) element;
-				return gitDateFormatter.formatDate(r.getCommitterIdent());
+				return relativeDateFormatter.formatDate(r.getCommitterIdent());
 			}
 
+			@Override
+			public String getToolTipText(Object element) {
+				RevCommit r = (RevCommit) element;
+				return isoDateFormatter.formatDate(r.getCommitterIdent());
+			}
 		});
 	}
 
