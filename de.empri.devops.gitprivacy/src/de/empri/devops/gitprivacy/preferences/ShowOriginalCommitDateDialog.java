@@ -1,5 +1,6 @@
 package de.empri.devops.gitprivacy.preferences;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.util.GitDateFormatter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -23,6 +25,10 @@ import de.empri.devops.gitprivacy.preferences.shared.OriginalCommitDateEncoder;
 import de.empri.devops.gitprivacy.preferences.shared.OriginalCommitDateEncoder.DecodedDates;
 
 public class ShowOriginalCommitDateDialog extends Dialog {
+
+	private static final String GIT_ISO_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss Z";
+	private static final DateTimeFormatter ISO_DATET_TIME_FORMATTER = DateTimeFormatter.ofPattern(GIT_ISO_TIME_PATTERN);
+	private static final GitDateFormatter ISO_DATE_FORMATTER = new GitDateFormatter(GitDateFormatter.Format.ISO);
 
 	private RevCommit commit;
 	private Repository repository;
@@ -50,7 +56,7 @@ public class ShowOriginalCommitDateDialog extends Dialog {
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(authorDateGroup);
 		GridLayoutFactory.swtDefaults().applyTo(authorDateGroup);
 		Label authorDate = new Label(authorDateGroup, SWT.NONE);
-		authorDate.setText(commit.getAuthorIdent().getWhen().toString());
+		authorDate.setText(ISO_DATE_FORMATTER.formatDate(commit.getAuthorIdent()));
 
 		Group realAuthorDateGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
 		realAuthorDateGroup.setText("Real Authored Date");
@@ -65,7 +71,7 @@ public class ShowOriginalCommitDateDialog extends Dialog {
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(commitDateGroup);
 		GridLayoutFactory.swtDefaults().applyTo(commitDateGroup);
 		Label commitDate = new Label(commitDateGroup, SWT.NONE);
-		commitDate.setText(commit.getCommitterIdent().getWhen().toString());
+		commitDate.setText(ISO_DATE_FORMATTER.formatDate(commit.getCommitterIdent()));
 
 		Group realCommitDateGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
 		realCommitDateGroup.setText("Real Committed Date");
@@ -74,13 +80,15 @@ public class ShowOriginalCommitDateDialog extends Dialog {
 		GridLayoutFactory.swtDefaults().applyTo(realCommitDateGroup);
 		Label realCommitDate = new Label(realCommitDateGroup, SWT.NONE);
 
+		DateTimeFormatter.ofPattern(GIT_ISO_TIME_PATTERN);
 		List<String> allKeys = new ManagesKeyStorage(repository.getDirectory()).readAllKeys();
 		if (!allKeys.isEmpty()) {
 			OriginalCommitDateEncoder encoder = new OriginalCommitDateEncoder(new Crypto(allKeys));
 			Optional<DecodedDates> decode = encoder.decode(commit.getFullMessage());
 			if (decode.isPresent()) {
-				realCommitDate.setText(decode.get().getCommittedDateTime().toString());
-				realAuthorDate.setText(decode.get().getAuthoredDateTime().toString());
+				
+				realCommitDate.setText(ISO_DATET_TIME_FORMATTER.format(decode.get().getCommittedDateTime()));
+				realAuthorDate.setText(ISO_DATET_TIME_FORMATTER.format(decode.get().getAuthoredDateTime()));
 			}
 		}
 
