@@ -1,8 +1,13 @@
 package de.empri.devops.gitprivacy.preferences;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Optional;
+import java.util.TimeZone;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -33,12 +38,22 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
+import de.empri.devops.gitprivacy.preferences.shared.OriginalCommitDateEncoder;
+import de.empri.devops.gitprivacy.preferences.shared.OriginalCommitDateEncoder.DecodedDates;
+import de.empri.devops.gitprivacy.preferences.shared.OriginalCommitDateEncoderFactory;
+
 public class ShowOriginalCommitDatesDialog extends Dialog {
 
 	protected static final int SHORT_OBJECT_ID_LENGTH = 7;
+	// EGit also has org.eclipse.egit.ui.internal.PreferenceBasedDateFormatter.java
+	private GitDateFormatter relativeDateFormatter = new GitDateFormatter(GitDateFormatter.Format.RELATIVE);
+	private GitDateFormatter isoDateFormatter = new GitDateFormatter(GitDateFormatter.Format.ISO);
+	private static final String GIT_ISO_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss Z";
+	private static final DateTimeFormatter ISO_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(GIT_ISO_TIME_PATTERN);
 	private Repository repository;
 	private TableViewer viewer;
 	private TableColumnLayout tableColumnLayout;
+	private Optional<OriginalCommitDateEncoder> encoderOptional;
 
 	public ShowOriginalCommitDatesDialog(Shell parent) {
 		super(parent);
@@ -47,6 +62,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 	public ShowOriginalCommitDatesDialog(Shell parent, Repository repository) {
 		super(parent);
 		this.repository = repository;
+		encoderOptional = OriginalCommitDateEncoderFactory.build(repository);
 	}
 
 	@Override
@@ -101,7 +117,8 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 
 	private void createColumns(Composite main, TableViewer viewer) {
 		ColumnViewerToolTipSupport.enableFor(viewer, ToolTip.NO_RECREATE);
-		String[] titles = { "Id", "Message", "Author", "Authored Date", "Commiter", "Committed Date" };
+		String[] titles = { "Id", "Message", "Author", "Authored Date", "Real Authored Date", "Commiter",
+				"Committed Date", "Real Committed Date" };
 
 		// TODO(FAP): see CommitLabelProvider#getColumnText, CommitGraphTable#createColumns
 		// TODO(FAP): tooltips come from org.eclipse.egit.ui.internal.history.CommitGraphTableHoverManager
@@ -155,26 +172,60 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 			}
         });
 
-		// EGit also has org.eclipse.egit.ui.internal.PreferenceBasedDateFormatter.java
-		GitDateFormatter relativeDateFormatter = new GitDateFormatter(GitDateFormatter.Format.RELATIVE);
-		GitDateFormatter isoDateFormatter = new GitDateFormatter(GitDateFormatter.Format.ISO);
 		col = createTableViewerColumn(titles[3]);
 		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
 				RevCommit r = (RevCommit) element;
-				return relativeDateFormatter.formatDate(r.getAuthorIdent());
+				return relativeAuthorDate(r);
 			}
 
 			@Override
 			public String getToolTipText(Object element) {
 				RevCommit r = (RevCommit) element;
 				return isoDateFormatter.formatDate(r.getAuthorIdent());
+			}
+		});
+
+		col = createTableViewerColumn(titles[4]);
+		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
+		col.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				RevCommit r = (RevCommit) element;
+				if (encoderOptional.isEmpty()) {
+					return "";
+				}
+				Optional<DecodedDates> decoded = encoderOptional.get().decode(r.getFullMessage());
+				if (decoded.isEmpty()) {
+					return "";
+				}
+				ZonedDateTime authoredDateTime = decoded.get().getAuthoredDateTime();
+				Date date = Date.from(authoredDateTime.toInstant());
+				return relativeDateFormatter
+						.formatDate(new PersonIdent("", "", date, TimeZone.getTimeZone(authoredDateTime.getZone())));
+			}
+
+
+			@Override
+			public String getToolTipText(Object element) {
+				RevCommit r = (RevCommit) element;
+				if (encoderOptional.isEmpty()) {
+					return "";
+				}
+				Optional<DecodedDates> decoded = encoderOptional.get().decode(r.getFullMessage());
+				if (decoded.isEmpty()) {
+					return "";
+				}
+				ZonedDateTime authoredDateTime = decoded.get().getAuthoredDateTime();
+				Date date = Date.from(authoredDateTime.toInstant());
+				return isoDateFormatter
+						.formatDate(new PersonIdent("", "", date, TimeZone.getTimeZone(authoredDateTime.getZone())));
             }
         });
 
-		col = createTableViewerColumn(titles[3]);
+		col = createTableViewerColumn(titles[5]);
 		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -191,7 +242,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 			}
 		});
 
-		col = createTableViewerColumn(titles[4]);
+		col = createTableViewerColumn(titles[6]);
 		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -206,6 +257,46 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 				return isoDateFormatter.formatDate(r.getCommitterIdent());
 			}
 		});
+
+		col = createTableViewerColumn(titles[7]);
+		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
+		col.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				RevCommit r = (RevCommit) element;
+				if (encoderOptional.isEmpty()) {
+					return "";
+				}
+				Optional<DecodedDates> decoded = encoderOptional.get().decode(r.getFullMessage());
+				if (decoded.isEmpty()) {
+					return "";
+				}
+				ZonedDateTime committedDateTime = decoded.get().getCommittedDateTime();
+				Date date = Date.from(committedDateTime.toInstant());
+				return relativeDateFormatter
+						.formatDate(new PersonIdent("", "", date, TimeZone.getTimeZone(committedDateTime.getZone())));
+			}
+
+			@Override
+			public String getToolTipText(Object element) {
+				RevCommit r = (RevCommit) element;
+				if (encoderOptional.isEmpty()) {
+					return "";
+				}
+				Optional<DecodedDates> decoded = encoderOptional.get().decode(r.getFullMessage());
+				if (decoded.isEmpty()) {
+					return "";
+				}
+				ZonedDateTime committedDateTime = decoded.get().getCommittedDateTime();
+				Date date = Date.from(committedDateTime.toInstant());
+				return isoDateFormatter
+						.formatDate(new PersonIdent("", "", date, TimeZone.getTimeZone(committedDateTime.getZone())));
+			}
+		});
+	}
+
+	private String relativeAuthorDate(RevCommit r) {
+		return relativeDateFormatter.formatDate(r.getAuthorIdent());
 	}
 
 	private TableViewerColumn createTableViewerColumn(String title) {
