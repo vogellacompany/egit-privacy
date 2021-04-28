@@ -59,7 +59,7 @@ public class MainTest {
 						.setAmend(true)
 						.setMessage(commitMessage)
 						.setAuthor(new PersonIdent(authorIdent, commitDateResult.getCommitDate()))
-						.setAuthor(new PersonIdent(committerIdent, commitDateResult.getCommitDate()))
+						.setCommitter(new PersonIdent(committerIdent, commitDateResult.getCommitDate()))
 						.call();
 			} catch (GitAPIException e) {
 				e.printStackTrace();
