@@ -1,7 +1,6 @@
 package de.empri.devops.gitprivacy.preferences;
 
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -19,10 +18,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import de.empri.devops.gitprivacy.preferences.shared.Crypto;
-import de.empri.devops.gitprivacy.preferences.shared.ManagesKeyStorage;
 import de.empri.devops.gitprivacy.preferences.shared.OriginalCommitDateEncoder;
 import de.empri.devops.gitprivacy.preferences.shared.OriginalCommitDateEncoder.DecodedDates;
+import de.empri.devops.gitprivacy.preferences.shared.OriginalCommitDateEncoderFactory;
 
 public class ShowOriginalCommitDateDialog extends Dialog {
 
@@ -81,10 +79,9 @@ public class ShowOriginalCommitDateDialog extends Dialog {
 		Label realCommitDate = new Label(realCommitDateGroup, SWT.NONE);
 
 		DateTimeFormatter.ofPattern(GIT_ISO_TIME_PATTERN);
-		List<String> allKeys = new ManagesKeyStorage(repository.getDirectory()).readAllKeys();
-		if (!allKeys.isEmpty()) {
-			OriginalCommitDateEncoder encoder = new OriginalCommitDateEncoder(new Crypto(allKeys));
-			Optional<DecodedDates> decode = encoder.decode(commit.getFullMessage());
+		Optional<OriginalCommitDateEncoder> encoderOptional = OriginalCommitDateEncoderFactory.build(repository);
+		if (encoderOptional.isPresent()) {
+			Optional<DecodedDates> decode = encoderOptional.get().decode(commit.getFullMessage());
 			if (decode.isPresent()) {
 				
 				realCommitDate.setText(ISO_DATET_TIME_FORMATTER.format(decode.get().getCommittedDateTime()));
