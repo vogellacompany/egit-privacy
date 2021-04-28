@@ -25,7 +25,7 @@ import de.empri.devops.gitprivacy.preferences.shared.OriginalCommitDateEncoderFa
 public class ShowOriginalCommitDateDialog extends Dialog {
 
 	private static final String GIT_ISO_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss Z";
-	private static final DateTimeFormatter ISO_DATET_TIME_FORMATTER = DateTimeFormatter.ofPattern(GIT_ISO_TIME_PATTERN);
+	private static final DateTimeFormatter ISO_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(GIT_ISO_TIME_PATTERN);
 	private static final GitDateFormatter ISO_DATE_FORMATTER = new GitDateFormatter(GitDateFormatter.Format.ISO);
 
 	private RevCommit commit;
@@ -84,8 +84,8 @@ public class ShowOriginalCommitDateDialog extends Dialog {
 			Optional<DecodedDates> decode = encoderOptional.get().decode(commit.getFullMessage());
 			if (decode.isPresent()) {
 				
-				realCommitDate.setText(ISO_DATET_TIME_FORMATTER.format(decode.get().getCommittedDateTime()));
-				realAuthorDate.setText(ISO_DATET_TIME_FORMATTER.format(decode.get().getAuthoredDateTime()));
+				realCommitDate.setText(ISO_DATE_TIME_FORMATTER.format(decode.get().getCommittedDateTime()));
+				realAuthorDate.setText(ISO_DATE_TIME_FORMATTER.format(decode.get().getAuthoredDateTime()));
 			}
 		}
 
