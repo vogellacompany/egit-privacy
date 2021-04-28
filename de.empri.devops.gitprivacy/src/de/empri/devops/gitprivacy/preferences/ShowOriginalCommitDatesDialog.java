@@ -47,6 +47,12 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 	}
 
 	@Override
+	protected void configureShell(Shell newShell) {
+		super.configureShell(newShell);
+		newShell.setText("Original Commit Dates");
+	}
+
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite main = new Composite(parent, SWT.NONE);
 		GridLayoutFactory.swtDefaults().applyTo(main);
@@ -91,7 +97,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 	}
 
 	private void createColumns(Composite main, TableViewer viewer) {
-		String[] titles = { "Id", "Message", "Author", "Authored Date" };
+		String[] titles = { "Id", "Message", "Author", "Authored Date", "Commiter", "Committed Date" };
 
 		// TODO(FAP): see CommitLabelProvider#getColumnText, CommitGraphTable#createColumns
 		// TODO(FAP): tooltips come from org.eclipse.egit.ui.internal.history.CommitGraphTableHoverManager
@@ -107,7 +113,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
         });
 
 		col = createTableViewerColumn(titles[1]);
-		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(20, 200));
+		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(20, 300));
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
@@ -117,7 +123,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
         });
 
 		col = createTableViewerColumn(titles[2]);
-		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 80));
+		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
@@ -129,7 +135,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 		// EGit also has org.eclipse.egit.ui.internal.PreferenceBasedDateFormatter.java
 		GitDateFormatter gitDateFormatter = new GitDateFormatter(GitDateFormatter.Format.RELATIVE);
 		col = createTableViewerColumn(titles[3]);
-		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 80));
+		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
@@ -138,6 +144,27 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
             }
 
         });
+
+		col = createTableViewerColumn(titles[3]);
+		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
+		col.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				RevCommit r = (RevCommit) element;
+				return r.getCommitterIdent().getName();
+			}
+		});
+
+		col = createTableViewerColumn(titles[4]);
+		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
+		col.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				RevCommit r = (RevCommit) element;
+				return gitDateFormatter.formatDate(r.getCommitterIdent());
+			}
+
+		});
 	}
 
 	private TableViewerColumn createTableViewerColumn(String title) {
