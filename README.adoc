@@ -1,0 +1,13 @@
+== egit-privacy
+
+=== Installing the development build
+
+Build the plug-in with maven by running this command in the project root directory:
+
+[source, terminal]
+----
+scripts/build
+----
+
+This will create an update site in `updatesite/target/repository/`.
+Install the plug-in from the update site via menu:Help[Install New Software... > Add > Local].
