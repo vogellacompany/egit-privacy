@@ -11,6 +11,7 @@ import org.eclipse.egit.core.internal.IRepositoryCommit;
 import org.eclipse.egit.ui.internal.history.HistoryPageInput;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.team.ui.history.IHistoryPage;
 import org.eclipse.team.ui.history.IHistoryView;
@@ -27,15 +28,12 @@ public class ShowRealGitDatesToolbarHandler {
 	public void execute(@Named(IServiceConstants.ACTIVE_SHELL) Shell s,
 			@org.eclipse.e4.core.di.annotations.Optional @Named(IServiceConstants.ACTIVE_SELECTION) Object o,
 			MPart part) {
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~");
-//		MessageDialog.openInformation(s, "E4 Information Dialog", "Hello world from a pure Eclipse 4 plug-in");
-		System.out.println(o);
-		Optional<Repository> optionalRepository = extractRepository(o);
-		if (optionalRepository.isPresent()) {
-			new ShowOriginalCommitDatesDialog(s, optionalRepository.get()).open();
-		}
-
-
+		Display.getDefault().asyncExec(() -> {
+			Optional<Repository> optionalRepository = extractRepository(o);
+			if (optionalRepository.isPresent()) {
+				new ShowOriginalCommitDatesDialog(s, optionalRepository.get()).open();
+			}
+		});
 	}
 
 	private Optional<Repository> extractRepository(Object o) {

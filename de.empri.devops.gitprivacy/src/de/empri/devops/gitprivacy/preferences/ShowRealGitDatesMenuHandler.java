@@ -10,6 +10,7 @@ import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.egit.core.internal.IRepositoryCommit;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 /** <b>Warning</b> : 
 As explained in <a href="http://wiki.eclipse.org/Eclipse4/RCP/FAQ#Why_aren.27t_my_handler_fields_being_re-injected.3F">this wiki page</a>, it is not recommended to define @Inject fields in a handler. <br/><br/>
@@ -21,14 +22,13 @@ public class ShowRealGitDatesMenuHandler {
 	public void execute(@Named(IServiceConstants.ACTIVE_SHELL) Shell s,
 			@org.eclipse.e4.core.di.annotations.Optional @Named(IServiceConstants.ACTIVE_SELECTION) Object o,
 			MPart part) {
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~");
-//		MessageDialog.openInformation(s, "E4 Information Dialog", "Hello world from a pure Eclipse 4 plug-in");
-		System.out.println(o);
-		Optional<IRepositoryCommit> commitOptional = extractCommit(o);
-		if (commitOptional.isPresent()) {
-			IRepositoryCommit commit = commitOptional.get();
-			new ShowOriginalCommitDateDialog(s, commit.getRepository(), commit.getRevCommit()).open();
-		}
+		Display.getDefault().asyncExec(() -> {
+			Optional<IRepositoryCommit> commitOptional = extractCommit(o);
+			if (commitOptional.isPresent()) {
+				IRepositoryCommit commit = commitOptional.get();
+				new ShowOriginalCommitDateDialog(s, commit.getRepository(), commit.getRevCommit()).open();
+			}
+		});
 	}
 
 	private Optional<IRepositoryCommit> extractCommit(Object o) {
