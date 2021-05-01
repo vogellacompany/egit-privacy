@@ -212,11 +212,11 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 			public String getToolTipText(Object element) {
 				RevCommit r = (RevCommit) element;
 				if (encoderOptional.isEmpty()) {
-					return "";
+					return null;
 				}
 				Optional<DecodedDates> decoded = encoderOptional.get().decode(r.getFullMessage());
 				if (decoded.isEmpty()) {
-					return "";
+					return null;
 				}
 				ZonedDateTime authoredDateTime = decoded.get().getAuthoredDateTime();
 				Date date = Date.from(authoredDateTime.toInstant());
@@ -281,11 +281,11 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 			public String getToolTipText(Object element) {
 				RevCommit r = (RevCommit) element;
 				if (encoderOptional.isEmpty()) {
-					return "";
+					return null;
 				}
 				Optional<DecodedDates> decoded = encoderOptional.get().decode(r.getFullMessage());
 				if (decoded.isEmpty()) {
-					return "";
+					return null;
 				}
 				ZonedDateTime committedDateTime = decoded.get().getCommittedDateTime();
 				Date date = Date.from(committedDateTime.toInstant());
