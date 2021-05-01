@@ -117,8 +117,8 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 
 	private void createColumns(Composite main, TableViewer viewer) {
 		ColumnViewerToolTipSupport.enableFor(viewer, ToolTip.NO_RECREATE);
-		String[] titles = { "Id", "Message", "Author", "Authored Date", "Real Authored Date", "Commiter",
-				"Committed Date", "Real Committed Date" };
+		String[] titles = { "Id", "Message", "Author", "Authored Date", "Real Date", "Commiter", "Committed Date",
+				"Real Date" };
 
 		// TODO(FAP): see CommitLabelProvider#getColumnText, CommitGraphTable#createColumns
 		// TODO(FAP): tooltips come from org.eclipse.egit.ui.internal.history.CommitGraphTableHoverManager
@@ -304,7 +304,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 		final TableColumn column = viewerColumn.getColumn();
 		column.setText(title);
 		column.setResizable(true);
-		column.setMoveable(true);
+		column.setMoveable(false);
 		return viewerColumn;
 	}
 
