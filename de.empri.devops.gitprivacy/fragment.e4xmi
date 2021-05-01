@@ -13,12 +13,12 @@
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_u7mfYKKlEeuyN8YqPFRFww" featurename="toolBarContributions" parentElementId="xpath:/">
     <elements xsi:type="menu:ToolBarContribution" xmi:id="_yA9t0KKlEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.toolbarcontribution.0" parentId="org.eclipse.team.ui.GenericHistoryView">
-      <children xsi:type="menu:DirectToolItem" xmi:id="_zGaS8KKlEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.directtoolitem.fabianwarhier" label="Fabian war hier" iconURI="platform:/plugin/de.empri.devops.gitprivacy/icons/Sample.png" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.ShowRealGitDatesToolbarHandler"/>
+      <children xsi:type="menu:DirectToolItem" xmi:id="_zGaS8KKlEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.directtoolitem.showrealcommitdates" label="Show Real Commit Dates" iconURI="platform:/plugin/de.empri.devops.gitprivacy/icons/encryption-menu.png" tooltip="Show real commit dates" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.ShowRealGitDatesToolbarHandler"/>
     </elements>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_yBVr0KKmEeuyN8YqPFRFww" featurename="menuContributions" parentElementId="xpath:/">
     <elements xsi:type="menu:MenuContribution" xmi:id="_1ywvAKKmEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.menucontribution.0" positionInParent="last" parentId="org.eclipse.egit.ui.historyPageContributions">
-      <children xsi:type="menu:DirectMenuItem" xmi:id="_7mlu0KKmEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.directmenuitem.original_dates" label="Show original dates" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.ShowRealGitDatesMenuHandler">
+      <children xsi:type="menu:DirectMenuItem" xmi:id="_7mlu0KKmEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.directmenuitem.original_dates" label="Show Real Dates" iconURI="platform:/plugin/de.empri.devops.gitprivacy/icons/encryption-menu.png" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.ShowRealGitDatesMenuHandler">
         <persistedState key="persistState" value="false"/>
         <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_fAcaIKdOEeu98-EIyFPHtg" coreExpressionId="de.empri.devops.gitprivacy.githistory.menucontribution.visible"/>
       </children>
