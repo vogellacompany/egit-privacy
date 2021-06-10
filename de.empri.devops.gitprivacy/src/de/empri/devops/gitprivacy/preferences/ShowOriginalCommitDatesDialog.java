@@ -85,7 +85,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 
 	private void createViewer(Composite main) {
 		viewer = new TableViewer(main,
-				SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+				SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER | SWT.VIRTUAL);
 		createColumns(main, viewer);
 		final Table table = viewer.getTable();
 		table.setHeaderVisible(true);
