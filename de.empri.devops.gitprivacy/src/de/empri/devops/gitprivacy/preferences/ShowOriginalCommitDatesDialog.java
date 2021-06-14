@@ -14,11 +14,15 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.ToolTip;
@@ -51,7 +55,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 	private static final String GIT_ISO_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss Z";
 	private static final DateTimeFormatter ISO_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(GIT_ISO_TIME_PATTERN);
 	private Repository repository;
-	private TableViewer viewer;
+	private TableViewer tableViewer;
 	private TableColumnLayout tableColumnLayout;
 	private Optional<OriginalCommitDateEncoder> encoderOptional;
 
@@ -76,17 +80,40 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 		Composite main = new Composite(parent, SWT.NONE);
 		GridLayoutFactory.swtDefaults().applyTo(main);
 		GridDataFactory.fillDefaults().indent(0, 0).grab(true, true).applyTo(main);
+		Composite tableParent = new Composite(main, SWT.NONE);
+		GridLayoutFactory.swtDefaults().applyTo(tableParent);
+		GridDataFactory.fillDefaults().indent(0, 0).grab(true, true).applyTo(tableParent);
 		tableColumnLayout = new TableColumnLayout();
-		main.setLayout(tableColumnLayout);
-		createViewer(main);
+		tableParent.setLayout(tableColumnLayout);
+		tableViewer = createTableViewer(tableParent);
+		// TODO(FAP): fix layout so textViewer is properly visible
+		TextViewer textViewer = new TextViewer(main, SWT.NONE);
+		textViewer.setEditable(false);
+		tableViewer.addSelectionChangedListener(sel -> {
+			ISelection selection = sel.getSelection();
+			if (selection instanceof StructuredSelection) {
+				StructuredSelection structuredSelection = (StructuredSelection) selection;
+				RevCommit firstElement = (RevCommit) structuredSelection.getFirstElement();
+				textViewer.setDocument(new Document(firstElement.getFullMessage()));
+			}
+		});
+		GridData gridData = new GridData();
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 2;
+		gridData.verticalSpan = 1;
+		gridData.minimumHeight = 200;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		textViewer.getControl().setLayoutData(gridData);
 
 		return main;
 	}
 
-	private void createViewer(Composite main) {
-		viewer = new TableViewer(main,
+	private TableViewer createTableViewer(Composite main) {
+		TableViewer viewer = new TableViewer(main,
 				SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER | SWT.VIRTUAL);
-		createColumns(main, viewer);
+		createColumns(viewer);
 		final Table table = viewer.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
@@ -109,13 +136,15 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
+		gridData.verticalSpan = 1;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		viewer.getControl().setLayoutData(gridData);
+		return viewer;
 	}
 
-	private void createColumns(Composite main, TableViewer viewer) {
+	private void createColumns(TableViewer viewer) {
 		ColumnViewerToolTipSupport.enableFor(viewer, ToolTip.NO_RECREATE);
 		String[] titles = { "Id", "Message", "Author", "Authored Date", "Real Date", "Commiter", "Committed Date",
 				"Real Date" };
@@ -123,7 +152,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 		// TODO(FAP): see CommitLabelProvider#getColumnText, CommitGraphTable#createColumns
 		// TODO(FAP): tooltips come from org.eclipse.egit.ui.internal.history.CommitGraphTableHoverManager
 
-		TableViewerColumn col = createTableViewerColumn(titles[0]);
+		TableViewerColumn col = createTableViewerColumn(viewer, titles[0]);
 		tableColumnLayout.setColumnData(col.getColumn(), new ColumnPixelData(70, false));
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
@@ -139,7 +168,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 			}
         });
 
-		col = createTableViewerColumn(titles[1]);
+		col = createTableViewerColumn(viewer, titles[1]);
 		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(20, 300));
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
@@ -155,7 +184,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 			}
         });
 
-		col = createTableViewerColumn(titles[2]);
+		col = createTableViewerColumn(viewer, titles[2]);
 		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
@@ -172,7 +201,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 			}
         });
 
-		col = createTableViewerColumn(titles[3]);
+		col = createTableViewerColumn(viewer, titles[3]);
 		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
@@ -188,7 +217,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 			}
 		});
 
-		col = createTableViewerColumn(titles[4]);
+		col = createTableViewerColumn(viewer, titles[4]);
 		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -225,7 +254,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
             }
         });
 
-		col = createTableViewerColumn(titles[5]);
+		col = createTableViewerColumn(viewer, titles[5]);
 		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -242,7 +271,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 			}
 		});
 
-		col = createTableViewerColumn(titles[6]);
+		col = createTableViewerColumn(viewer, titles[6]);
 		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -258,7 +287,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 			}
 		});
 
-		col = createTableViewerColumn(titles[7]);
+		col = createTableViewerColumn(viewer, titles[7]);
 		tableColumnLayout.setColumnData(col.getColumn(), new ColumnWeightData(5, 120));
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -299,8 +328,8 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 		return relativeDateFormatter.formatDate(r.getAuthorIdent());
 	}
 
-	private TableViewerColumn createTableViewerColumn(String title) {
-		final TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
+	private TableViewerColumn createTableViewerColumn(TableViewer tableViewer, String title) {
+		final TableViewerColumn viewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn column = viewerColumn.getColumn();
 		column.setText(title);
 		column.setResizable(true);
