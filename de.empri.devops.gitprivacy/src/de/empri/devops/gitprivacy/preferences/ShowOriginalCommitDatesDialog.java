@@ -35,6 +35,7 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.util.GitDateFormatter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -70,6 +71,11 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 	}
 
 	@Override
+	protected boolean isResizable() {
+		return true;
+	}
+
+	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		newShell.setText("Original Commit Dates");
@@ -77,7 +83,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		Composite main = new Composite(parent, SWT.NONE);
+		SashForm main = new SashForm(parent, SWT.VERTICAL);
 		GridLayoutFactory.swtDefaults().applyTo(main);
 		GridDataFactory.fillDefaults().indent(0, 0).grab(true, true).applyTo(main);
 		Composite tableParent = new Composite(main, SWT.NONE);
@@ -87,7 +93,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 		tableParent.setLayout(tableColumnLayout);
 		tableViewer = createTableViewer(tableParent);
 		// TODO(FAP): fix layout so textViewer is properly visible
-		TextViewer textViewer = new TextViewer(main, SWT.NONE);
+		TextViewer textViewer = new TextViewer(main, SWT.V_SCROLL | SWT.BORDER);
 		textViewer.setEditable(false);
 		tableViewer.addSelectionChangedListener(sel -> {
 			ISelection selection = sel.getSelection();
@@ -99,7 +105,6 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 		});
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 2;
 		gridData.verticalSpan = 1;
 		gridData.minimumHeight = 200;
 		gridData.grabExcessHorizontalSpace = true;
@@ -107,6 +112,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 		gridData.horizontalAlignment = GridData.FILL;
 		textViewer.getControl().setLayoutData(gridData);
 
+		main.setWeights(4, 1);
 		return main;
 	}
 
@@ -135,7 +141,6 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 2;
 		gridData.verticalSpan = 1;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
