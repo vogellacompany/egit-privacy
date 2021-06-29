@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,6 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.FrameworkUtil;
-
 
 /**
  * This class represents a preference page that
@@ -94,14 +94,32 @@ public class GitPrivacySettings
 		super.performOk();
 		
 		repoBooleans.stream().filter(BooleanFieldEditor::getBooleanValue).forEach(editor -> {
-			String repoPath = editor.getLabelText();
-			// TODO(FAP): check if post-commit file already exist and ask via dialog if it should be overwritten?
-			File jar = new File(repoPath + "/hooks/post-commit-hook.jar");
-			writeToDisk(jar, "/resources/post-commit-hook.jar");
-			File hook = new File(repoPath + "/hooks/post-commit");
-			writeToDisk(hook, "/resources/post-commit");
-			hook.setExecutable(true);
-			// TODO(FAP): add default git config if not already there?
+			List<String> cmdArgs = new ArrayList<>();
+			ProcessBuilder processBuilder = new ProcessBuilder();
+			cmdArgs.add("sh");
+			cmdArgs.add("-c");
+			String cmd = "git-privacy init";
+			cmdArgs.add(cmd);
+			processBuilder.command(cmdArgs);
+			processBuilder.redirectOutput(Redirect.INHERIT);
+			processBuilder.redirectError(Redirect.INHERIT);
+			processBuilder.directory(new File(editor.getLabelText()));
+			Process process;
+			try {
+				process = processBuilder.start();
+				process.waitFor();
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//			String repoPath = editor.getLabelText();
+//			// TODO(FAP): check if post-commit file already exist and ask via dialog if it should be overwritten?
+//			File jar = new File(repoPath + "/hooks/post-commit-hook.jar");
+//			writeToDisk(jar, "/resources/post-commit-hook.jar");
+//			File hook = new File(repoPath + "/hooks/post-commit");
+//			writeToDisk(hook, "/resources/post-commit");
+//			hook.setExecutable(true);
+//			// TODO(FAP): add default git config if not already there?
 		});
 
 		return true;
