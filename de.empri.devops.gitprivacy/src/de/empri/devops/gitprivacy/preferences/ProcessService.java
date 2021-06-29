@@ -5,16 +5,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jgit.util.FS;
+
 public class ProcessService {
 
+	private FS fs;
+
+	public ProcessService() {
+		fs = FS.detect();
+	}
+
 	public Process start(String command, File workingDirectory) throws IOException {
-		List<String> cmdArgs = new ArrayList<>();
-		ProcessBuilder processBuilder = new ProcessBuilder();
-		cmdArgs.add("sh");
-		cmdArgs.add("-c");
-		cmdArgs.add(command + " \"$@\"");
-		cmdArgs.add(command);
-		processBuilder.command(cmdArgs);
+		return start(command, new ArrayList<>(), workingDirectory);
+	}
+
+	public Process start(String command, List<String> args, File workingDirectory) throws IOException {
+		ProcessBuilder processBuilder = fs.runInShell(command, args.toArray(new String[args.size()]));
 		processBuilder.directory(workingDirectory);
 		return processBuilder.start();
 	}
