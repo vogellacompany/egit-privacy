@@ -35,7 +35,7 @@ public class ManagesKeyStorage {
 	 * @param gitDirectory
 	 */
 	public ManagesKeyStorage(File gitDirectory) {
-		keysDirectory = new File(gitDirectory, "keys"); //$NON-NLS-1$
+		keysDirectory = new File(gitDirectory, "privacy/keys"); //$NON-NLS-1$
 		currentKeyFile = new File(keysDirectory, "current"); //$NON-NLS-1$
 		keysArchiveDirectory = new File(keysDirectory, "archive"); //$NON-NLS-1$
 	}
