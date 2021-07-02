@@ -49,7 +49,10 @@
                   <and>
                      <instanceof value="org.eclipse.egit.core.internal.IRepositoryCommit" />
 	                 <adapt type="org.eclipse.egit.core.internal.IRepositoryCommit">
-	                    <test property="GitHistorySelection.hasEncryptedDates" />
+	                    <test 
+	                    property="GitHistorySelection.hasEncryptedDates"
+	                    forcePluginActivation="true"
+	                     />
 	                 </adapt>
 	              </and>
                </iterate>
