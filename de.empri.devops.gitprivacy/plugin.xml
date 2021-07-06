@@ -59,35 +59,14 @@
          </and>
          </with>
       </definition>
-   </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            allPopups="false"
-            locationURI="popup:org.eclipse.egit.ui.RepositoriesView??after=repo-5">
-         <command
-               commandId="de.empri.devops.gitprivacy.init"
-               label="Initialize EGit-Privacy"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-            </visibleWhen>
-         </command>
-      </menuContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            id="de.empri.devops.gitprivacy.init"
-            name="name">
-      </command>
-   </extension>
-   <extension
-         point="org.eclipse.ui.handlers">
-      <handler
-            class="de.empri.devops.gitprivacy.preferences.InitializeCommandHandler"
-            commandId="de.empri.devops.gitprivacy.init">
-      </handler>
+      <definition id="de.empri.devops.gitprivacy.menucontribution.initializeEgitPrivay.visible">
+	      <with variable="selection">
+	         <and>
+	            <count value="1" />
+	            <instanceof value="org.eclipse.jface.viewers.StructuredSelection" />
+	         </and>
+	      </with>
+      </definition>
    </extension>
 
 </plugin>
