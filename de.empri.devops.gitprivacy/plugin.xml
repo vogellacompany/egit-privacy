@@ -38,6 +38,13 @@
          properties="hasEncryptedDates"
          type="org.eclipse.egit.core.internal.IRepositoryCommit">
       </propertyTester>
+      <propertyTester
+         class="de.empri.devops.gitprivacy.preferences.HasBeenInitializedPropertyTester"
+         id="de.empri.devops.gitprivacy.CommitHasEncryptedDatesTester"
+         namespace="GitRepositoriesSelection"
+         properties="hasBeenInitialized"
+         type="org.eclipse.egit.ui.internal.repository.tree.RepositoryNode">
+      </propertyTester>
    </extension>
    <extension point="org.eclipse.core.expressions.definitions">
       <definition id="de.empri.devops.gitprivacy.githistory.menucontribution.visible">
@@ -64,6 +71,14 @@
 	         <and>
 	            <count value="1" />
 	            <instanceof value="org.eclipse.jface.viewers.StructuredSelection" />
+	            <iterate ifEmpty="false">
+                  <and>
+                    <test 
+                    property="GitRepositoriesSelection.hasBeenInitialized"
+                    forcePluginActivation="true"
+                     />
+	              </and>
+               </iterate>
 	         </and>
 	      </with>
       </definition>
