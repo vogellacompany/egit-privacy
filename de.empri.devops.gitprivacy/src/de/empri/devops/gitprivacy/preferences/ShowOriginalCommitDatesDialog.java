@@ -85,7 +85,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 	protected Control createDialogArea(Composite parent) {
 		SashForm main = new SashForm(parent, SWT.VERTICAL);
 		GridLayoutFactory.swtDefaults().applyTo(main);
-		GridDataFactory.fillDefaults().indent(0, 0).grab(true, true).applyTo(main);
+		GridDataFactory.fillDefaults().indent(0, 0).minSize(1000, 600).grab(true, true).applyTo(main);
 		Composite tableParent = new Composite(main, SWT.NONE);
 		GridLayoutFactory.swtDefaults().applyTo(tableParent);
 		GridDataFactory.fillDefaults().indent(0, 0).grab(true, true).applyTo(tableParent);
