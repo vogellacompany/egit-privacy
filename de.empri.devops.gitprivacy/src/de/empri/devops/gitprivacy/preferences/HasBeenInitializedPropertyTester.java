@@ -33,7 +33,7 @@ public class HasBeenInitializedPropertyTester extends PropertyTester {
 			}
 		}
 
-		return !missing.isEmpty();
+		return missing.isEmpty();
 	}
 
 	private boolean isGitPrivacyMissing(Path hooksDirectory, Path hook) {

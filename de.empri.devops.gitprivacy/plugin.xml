@@ -73,10 +73,12 @@
 	            <instanceof value="org.eclipse.jface.viewers.StructuredSelection" />
 	            <iterate ifEmpty="false">
                   <and>
-                    <test 
-                    property="GitRepositoriesSelection.hasBeenInitialized"
-                    forcePluginActivation="true"
-                     />
+                    <not>
+                      <test 
+                      property="GitRepositoriesSelection.hasBeenInitialized"
+                      forcePluginActivation="true"
+                       />
+                    </not>
 	              </and>
                </iterate>
 	         </and>
