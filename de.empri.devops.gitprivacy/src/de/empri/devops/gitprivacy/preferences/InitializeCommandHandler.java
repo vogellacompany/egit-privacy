@@ -6,20 +6,22 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
+import javax.inject.Named;
+
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.egit.ui.internal.repository.tree.RepositoryNode;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
 
-public class InitializeCommandHandler extends AbstractHandler {
+public class InitializeCommandHandler {
 
 	private ProcessService processService;
 	private ILog logger;
@@ -29,16 +31,20 @@ public class InitializeCommandHandler extends AbstractHandler {
 		logger = Platform.getLog(getClass());
 	}
 
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ISelection selection = HandlerUtil.getCurrentSelectionChecked(event);
+	@Execute
+	public void execute(@Named(IServiceConstants.ACTIVE_SELECTION) @Optional Object selection)
+			throws ExecutionException {
+		if (!(selection instanceof ISelection)) {
+			return;
+		}
+		ISelection iSelection = (ISelection) selection;
 		List<RepositoryNode> list = null;
 		if (selection instanceof IStructuredSelection) {
 			list = ((IStructuredSelection) selection).toList();
 		}
 		if (list == null || list.size() != 1) {
 			// TODO(FAP): show error dialog?
-			return null;
+			return;
 		}
 		RepositoryNode node = list.get(0);
 		try {
@@ -49,7 +55,7 @@ public class InitializeCommandHandler extends AbstractHandler {
 				if (!message.isBlank()) {
 					MessageDialog.openError(activeShell, UIText.InitializeCommandHandler_ErrorDialog_Title,
 							message);
-					return null;
+					return;
 				}
 			}
 			String message = ""; //$NON-NLS-1$
@@ -62,7 +68,7 @@ public class InitializeCommandHandler extends AbstractHandler {
 			// TODO git-privacy not installed?
 			e.printStackTrace();
 		}
-		return null;
+		return;
 	}
 
 }
