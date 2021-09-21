@@ -22,6 +22,7 @@ public class ProcessService {
 	public Process start(String command, List<String> args, File workingDirectory) throws IOException {
 		ProcessBuilder processBuilder = fs.runInShell(command, args.toArray(new String[args.size()]));
 		processBuilder.directory(workingDirectory);
+		processBuilder.redirectErrorStream(true);
 		return processBuilder.start();
 	}
 

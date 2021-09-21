@@ -12,14 +12,14 @@
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="de.empri.devops.gitprivacy.preferences.PreferenceInitializer">
+            class="de.empri.devops.gitprivacy.preferences.GitPrivacyPreferenceInitializer">
       </initializer>
    </extension>
       <extension
          id="dd.fragment"
          point="org.eclipse.e4.workbench.model">
       <fragment
-            apply="initial"
+            apply="always"
             uri="fragment.e4xmi">
       </fragment>
    </extension>
