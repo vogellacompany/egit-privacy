@@ -18,6 +18,7 @@ public class GitPrivacyPreferenceInitializer extends AbstractPreferenceInitializ
 		store.setDefault(PreferenceConstants.P_CHOICE, "choice2");
 		store.setDefault(PreferenceConstants.P_STRING,
 				"Default value");
+		store.setDefault(UIPreferences.MODIFY_COMMIT_DATE, true);
 	}
 
 }

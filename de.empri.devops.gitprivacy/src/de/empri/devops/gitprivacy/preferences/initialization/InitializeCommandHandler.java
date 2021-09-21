@@ -15,6 +15,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.egit.ui.internal.repository.tree.RepositoryNode;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -52,8 +53,10 @@ public class InitializeCommandHandler {
 			return errors.get(errors.size() - 1);
 		}
 	}
+
 	@Execute
-	public void execute(@Named(IServiceConstants.ACTIVE_SELECTION) @Optional Object selection)
+	public void execute(@Named(IServiceConstants.ACTIVE_SHELL) Shell s,
+			@Named(IServiceConstants.ACTIVE_SELECTION) @Optional Object selection)
 			throws ExecutionException {
 		if (!(selection instanceof ISelection)) {
 			return;
@@ -67,7 +70,15 @@ public class InitializeCommandHandler {
 			// TODO(FAP): show error dialog?
 			return;
 		}
+
 		RepositoryNode node = list.get(0);
+
+		int configInitializationReturnCode = new InitializeGitPrivacyConfigDialog(s, node.getRepository()).open();
+
+		if (configInitializationReturnCode == IDialogConstants.CANCEL_ID) {
+			return;
+		}
+
 		try {
 			// we're using script to force the merging of stdout and syserr without any
 			// caching, giving us the correct chronological order

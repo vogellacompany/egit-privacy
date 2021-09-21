@@ -7,6 +7,26 @@ public class UIText extends NLS {
 	private static final String BUNDLE_NAME = "de.empri.devops.gitprivacy.preferences.uitext";
 
 
+	public static String PrivacyPreferencePage_upper_commit_time_limit;
+
+	public static String PrivacyPreferencePage_lower_commit_time_limit;
+
+	public static String PrivacyPreferencePage_limit_commit_time;
+
+	public static String PrivacyPreferencePage_modify_commit_second;
+
+	public static String PrivacyPreferencePage_modify_commit_minute;
+
+	public static String PrivacyPreferencePage_modify_commit_hour;
+
+	public static String PrivacyPreferencePage_modify_commit_day;
+
+	public static String PrivacyPreferencePage_modify_commit_month;
+
+	public static String PrivacyPreferencePage_limit_commit_time_error_message;
+
+	public static String PrivacyPreferencePage_git_privacy_redating_group;
+
 	public static String GitPrivacyPage_PwFromEclipsePrefsOrGitConfigDialog_Message;
 
 	public static String GitPrivacyPage_KeySaved_Message;
@@ -54,6 +74,36 @@ public class UIText extends NLS {
 	public static String InitializeCommandHandler_SuccessDialog_Message;
 
 	public static String InitializeCommandHandler_SuccessDialog_Title;
+
+	public static String InitializeGitPrivacyConfigDialog_cancelButton;
+
+
+	public static String InitializeGitPrivacyConfigDialog_lowerLimitErrorMessage;
+
+
+	public static String InitializeGitPrivacyConfigDialog_lowerLimitLEQErrorMessage;
+
+
+	public static String InitializeGitPrivacyConfigDialog_noTimeUnitForRedactionChosenErrorMessage;
+
+
+	public static String InitializeGitPrivacyConfigDialog_okayButton;
+
+
+	public static String InitializeGitPrivacyConfigDialog_titleArea_message;
+
+
+	public static String InitializeGitPrivacyConfigDialog_title;
+
+
+	public static String InitializeGitPrivacyConfigDialog_titleArea_title;
+
+
+	public static String InitializeGitPrivacyConfigDialog_upperLimitErrorMessage;
+
+
+	public static String InitializeGitPrivacyConfigDialog_upperLimitGTEErrorMessage;
+
 
 	public static String RedactEmailDialog_addRowButtonText;
 
@@ -107,6 +157,8 @@ public class UIText extends NLS {
 
 
 	public static String RedateAllFollowingCommitsHandler_redateJobTitle;
+
+	public static String PrivacyPreferencePage_modify_commit_date;
 
 	static {
 		initializeMessages(BUNDLE_NAME, UIText.class);
