@@ -112,7 +112,7 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 		gridData.horizontalAlignment = GridData.FILL;
 		textViewer.getControl().setLayoutData(gridData);
 
-		main.setWeights(4, 1);
+		main.setWeights(40000, 10000);
 		return main;
 	}
 
