@@ -49,12 +49,11 @@ public class UIText extends NLS {
 
 	public static String GitPrivacyPage_MigrateFromPasswordButton_Text;
 
-
 	public static String InitializeCommandHandler_ErrorDialog_Title;
 
+	public static String InitializeCommandHandler_SuccessDialog_Message;
 
 	public static String InitializeCommandHandler_SuccessDialog_Title;
-
 
 	static {
 		initializeMessages(BUNDLE_NAME, UIText.class);
