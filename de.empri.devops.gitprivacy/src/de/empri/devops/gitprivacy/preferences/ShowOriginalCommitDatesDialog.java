@@ -129,7 +129,9 @@ public class ShowOriginalCommitDatesDialog extends Dialog {
 		try (RevWalk revWalk = new RevWalk(repository)) {
 			try {
 				ObjectId headCommit = repository.resolve(Constants.HEAD);
-				revWalk.markStart(revWalk.parseCommit(headCommit));
+				if (headCommit != null) {
+					revWalk.markStart(revWalk.parseCommit(headCommit));
+				}
 			} catch (RevisionSyntaxException | IOException e1) {
 				System.out.println(e1);
 			}
