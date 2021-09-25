@@ -122,7 +122,7 @@ public class GitPrivacyPropertyPage extends PropertyPage {
 		openKeyDirectoryButton
 				.addSelectionListener(widgetSelectedAdapter(e -> {
 					File keysDirectory = managesKeyStorage.getKeysDirectory();
-					keysDirectory.mkdir();
+					keysDirectory.mkdirs();
 					Program.launch(
 							keysDirectory
 							.getPath());
