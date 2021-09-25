@@ -28,7 +28,7 @@ import de.empri.devops.gitprivacy.preferences.shared.Crypto;
 import de.empri.devops.gitprivacy.preferences.shared.GitPrivacyConfigReader;
 import de.empri.devops.gitprivacy.preferences.shared.ManagesKeyStorage;
 
-public class GitPrivacyPage extends PropertyPage {
+public class GitPrivacyPropertyPage extends PropertyPage {
 
 	private Clipboard clipboard;
 
