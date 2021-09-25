@@ -44,6 +44,7 @@ public class GitPrivacyPropertyPage extends PropertyPage {
 	
 	@Override
 	protected Control createContents(Composite parent) {
+		noDefaultAndApplyButton();
 		Composite composite = SWTUtils.createHVFillComposite(parent,
 				SWTUtils.MARGINS_NONE);
 
