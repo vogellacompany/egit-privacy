@@ -24,7 +24,7 @@
       </children>
     </elements>
     <elements xsi:type="menu:MenuContribution" xmi:id="_l0Ea0N5IEeueLbs_zjcMXQ" elementId="de.empri.devops.gitprivacy.menucontribution.initializeEgitPrivay" positionInParent="after=repo-5" parentId="org.eclipse.egit.ui.RepositoriesView">
-      <children xsi:type="menu:DirectMenuItem" xmi:id="_vzmvoN5UEeuAGuBJz0IDMQ" elementId="de.empri.devops.gitprivacy.directmenuitem.initializeEgitPrivacy" label="&amp;Initialize EGit-Privacy" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.initialization.InitializeCommandHandler">
+      <children xsi:type="menu:DirectMenuItem" xmi:id="_vzmvoN5UEeuAGuBJz0IDMQ" elementId="de.empri.devops.gitprivacy.directmenuitem.initializeEgitPrivacy" label="&amp;Initialize EGit-Privacy" iconURI="platform:/plugin/de.empri.devops.gitprivacy/icons/encryption-menu.png" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.initialization.InitializeCommandHandler">
         <visibleWhen xsi:type="ui:CoreExpression" xmi:id="__b9SoN5WEeuAGuBJz0IDMQ" coreExpressionId="de.empri.devops.gitprivacy.menucontribution.initializeEgitPrivay.visible"/>
       </children>
     </elements>
