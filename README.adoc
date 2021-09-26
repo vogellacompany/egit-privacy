@@ -78,6 +78,18 @@ The following configuration options are supported by EGit-Privacy:
 - privacy.pattern
 - privacy.replacements
 
+=== Migrating from password based encryption
+
+Old versions of this plug-in used an encryption method based on a password and a salt.
+This method of encryption is no longer supported.
+You can migrate to the new key based encryption method through the Git Privacy property page.
+Open the property page of a Git repository by opening the `Git Repositories` view, right clicking on a repository and choosing menu:Properties[Git Privacy].
+Then click on `Migrate from password`.
+
+image::img/migration.png[]
+
+NOTE: This button will only be activated if a password and salt is found either in the Git config (`privacy.password` and `privacy.salt`) or in the Eclipse preferences.
+
 === Global setup
 
 git-privacy supports setting itself up globally so that all newly created Git repositories are created with the git-privacy hooks in place.
