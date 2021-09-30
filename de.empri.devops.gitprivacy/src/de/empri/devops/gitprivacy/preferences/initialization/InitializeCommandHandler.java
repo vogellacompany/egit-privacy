@@ -69,6 +69,8 @@ public class InitializeCommandHandler {
 		}
 		RepositoryNode node = list.get(0);
 		try {
+			// we're using script to force the merging of stdout and syserr without any
+			// caching, giving us the correct chronological order
 			Process process = processService.start("script -q -c \"git-privacy init\" /dev/null",
 					node.getRepository().getDirectory());
 			Shell activeShell = Display.getCurrent().getActiveShell();

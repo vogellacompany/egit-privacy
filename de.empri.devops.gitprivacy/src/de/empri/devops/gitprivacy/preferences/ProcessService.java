@@ -16,14 +16,20 @@ public class ProcessService {
 	}
 
 	public Process start(String command, File workingDirectory) throws IOException {
-		return start(command, new ArrayList<>(), workingDirectory);
+		return start(command, new ArrayList<>(), workingDirectory, true);
 	}
 
-	public Process start(String command, List<String> args, File workingDirectory) throws IOException {
+	public Process start(String command, File workingDirectory, boolean redirectErrorStream) throws IOException {
+		return start(command, new ArrayList<>(), workingDirectory, redirectErrorStream);
+	}
+
+	public Process start(String command, List<String> args, File workingDirectory, boolean redirectErrorStream)
+			throws IOException {
 		ProcessBuilder processBuilder = fs.runInShell(command, args.toArray(new String[args.size()]));
 		processBuilder.directory(workingDirectory);
-		processBuilder.redirectErrorStream(true);
+		processBuilder.redirectErrorStream(redirectErrorStream);
 		return processBuilder.start();
 	}
+
 
 }

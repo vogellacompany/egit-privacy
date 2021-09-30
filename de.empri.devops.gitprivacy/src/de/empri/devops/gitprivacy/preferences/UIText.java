@@ -55,6 +55,23 @@ public class UIText extends NLS {
 
 	public static String InitializeCommandHandler_SuccessDialog_Title;
 
+	public static String RedateAllFollowingCommitsHandler_alreadyPushedToRemoteDialog_dontRedateButton;
+
+
+	public static String RedateAllFollowingCommitsHandler_alreadyPushedToRemoteDialog_message;
+
+
+	public static String RedateAllFollowingCommitsHandler_alreadyPushedToRemoteDialog_redateButton;
+
+
+	public static String RedateAllFollowingCommitsHandler_alreadyPushedToRemoteDialog_title;
+
+
+	public static String RedateAllFollowingCommitsHandler_redateErrorDialog_title;
+
+
+	public static String RedateAllFollowingCommitsHandler_redateJobTitle;
+
 	static {
 		initializeMessages(BUNDLE_NAME, UIText.class);
 	}

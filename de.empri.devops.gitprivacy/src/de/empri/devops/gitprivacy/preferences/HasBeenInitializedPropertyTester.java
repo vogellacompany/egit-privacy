@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.eclipse.core.expressions.PropertyTester;
+import org.eclipse.egit.core.internal.IRepositoryCommit;
 import org.eclipse.egit.ui.internal.repository.tree.RepositoryNode;
+import org.eclipse.jgit.lib.Repository;
 
 public class HasBeenInitializedPropertyTester extends PropertyTester {
 
@@ -17,13 +19,19 @@ public class HasBeenInitializedPropertyTester extends PropertyTester {
 
 	@Override
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-		if (!(receiver instanceof RepositoryNode)) {
-			// TODO(FAP): log error about incompatibility
+		if (!((receiver instanceof RepositoryNode) || (receiver instanceof IRepositoryCommit))) {
 			return false;
 		}
 
-		RepositoryNode repositoryNode = (RepositoryNode) receiver;
-		Path repoDirectory = repositoryNode.getRepository().getDirectory().toPath();
+		Repository repository = null;
+		if (receiver instanceof IRepositoryCommit) {
+			repository = ((IRepositoryCommit) receiver).getRepository();
+		} else if (receiver instanceof RepositoryNode) {
+			RepositoryNode repositoryNode = (RepositoryNode) receiver;
+			repository = repositoryNode.getRepository();
+		}
+
+		Path repoDirectory = repository.getDirectory().toPath();
 		Path hooksDirectory = repoDirectory.resolve("hooks");
 		List<Path> missing = new ArrayList<>(HOOKS.size());
 		for (String hookName : HOOKS) {
