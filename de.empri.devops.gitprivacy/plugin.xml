@@ -32,10 +32,24 @@
       </propertyTester>
       <propertyTester
          class="de.empri.devops.gitprivacy.preferences.HasBeenInitializedPropertyTester"
-         id="de.empri.devops.gitprivacy.CommitHasEncryptedDatesTester"
+         id="de.empri.devops.gitprivacy.HasBeenInitializedPropertyTester"
          namespace="GitRepositoriesSelection"
          properties="hasBeenInitialized"
          type="org.eclipse.egit.ui.internal.repository.tree.RepositoryNode">
+      </propertyTester>
+      <propertyTester
+         class="de.empri.devops.gitprivacy.preferences.HasBeenInitializedPropertyTester"
+         id="de.empri.devops.gitprivacy.HasBeenInitializedPropertyTesterCommit"
+         namespace="GitHistorySelection"
+         properties="hasBeenInitialized"
+         type="org.eclipse.egit.core.internal.IRepositoryCommit">
+      </propertyTester>
+      <propertyTester
+         class="de.empri.devops.gitprivacy.preferences.HasFollowingCommitsPropertyTester"
+         id="de.empri.devops.gitprivacy.HasFollowingCommitsPropertyTester"
+         namespace="GitHistorySelection"
+         properties="hasFollowingCommits"
+         type="org.eclipse.egit.core.internal.IRepositoryCommit">
       </propertyTester>
    </extension>
    <extension point="org.eclipse.core.expressions.definitions">
@@ -55,7 +69,7 @@
 	                 </adapt>
 	              </and>
                </iterate>
-         </and>
+           </and>
          </with>
       </definition>
       <definition id="de.empri.devops.gitprivacy.menucontribution.initializeEgitPrivay.visible">
@@ -75,6 +89,31 @@
                </iterate>
 	         </and>
 	      </with>
+      </definition>
+      <definition id="de.empri.devops.gitprivacy.menucontribution.redateAllFollowingCommits.visible">
+         <with variable="selection">
+            <and>
+               <count value="1" />
+               <instanceof value="org.eclipse.jface.viewers.StructuredSelection" />
+               <iterate ifEmpty="false">
+                  <and>
+                     <instanceof value="org.eclipse.egit.core.internal.IRepositoryCommit" />
+	                 <adapt type="org.eclipse.egit.core.internal.IRepositoryCommit">
+	                    <and>
+	                       <test 
+	                        property="GitHistorySelection.hasFollowingCommits"
+	                        forcePluginActivation="true"
+	                       />
+	                       <test 
+	                        property="GitHistorySelection.hasBeenInitialized"
+	                        forcePluginActivation="true"
+	                       />
+	                    </and>
+	                 </adapt>
+	              </and>
+               </iterate>
+           </and>
+         </with>
       </definition>
    </extension>
 
