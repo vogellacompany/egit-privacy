@@ -1,7 +1,3 @@
 #!/usr/bin/env bash
 
-mvn clean compile assembly:single --file de.empri.devops.gitprivacy.hook/pom.xml
-
-cp de.empri.devops.gitprivacy.hook/target/*.jar de.empri.devops.gitprivacy/resources/post-commit-hook.jar --force
-
 mvn clean verify

@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-flock -n .git/hooks/post-commit -c "/usr/bin/env java -jar .git/hooks/post-commit-hook.jar"
