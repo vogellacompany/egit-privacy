@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Hook
-Bundle-SymbolicName: de.empri.devops.gitprivacy.hook
-Bundle-Version: 1.0.0.qualifier
-Automatic-Module-Name: de.empri.devops.gitprivacy.hook
-Bundle-RequiredExecutionEnvironment: JavaSE-11
-Main-Class: de.empri.devops.gitprivacy.hook.MainTest
-Class-Path: .
