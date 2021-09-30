@@ -2,14 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            class="de.empri.devops.gitprivacy.preferences.GitPrivacySettings"
-            id="de.empri.devops.gitprivacy.preferences.GitPrivacySettings"
-            name="Git Privacy Settings">
-      </page>
-   </extension>
-   <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
             class="de.empri.devops.gitprivacy.preferences.GitPrivacyPreferenceInitializer">
