@@ -26,6 +26,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
+import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
@@ -78,7 +79,7 @@ public class RedateAllFollowingCommitsHandler {
 			try (Git git = new Git(repository)) {
 
 				Iterable<RevCommit> logs = git.log()
-						.addRange(repository.resolve(objectId.getName()), repository.resolve("HEAD")).call(); //$NON-NLS-1$
+						.addRange(repository.resolve(objectId.getName()), repository.resolve(Constants.HEAD)).call();
 				RevCommit nextFollowingCommit = StreamSupport.stream(logs.spliterator(), false)
 						.reduce((prev, next) -> next).orElse(null);
 

@@ -55,6 +55,42 @@ public class UIText extends NLS {
 
 	public static String InitializeCommandHandler_SuccessDialog_Title;
 
+	public static String RedactEmailDialog_addRowButtonText;
+
+
+	public static String RedactEmailDialog_deleteRowButtonText;
+
+
+	public static String RedactEmailDialog_dialogTitle;
+
+
+	public static String RedactEmailDialog_dontRedactButtonText;
+
+
+	public static String RedactEmailDialog_emailToRedactColumnName;
+
+
+	public static String RedactEmailDialog_redactButtonText;
+
+
+	public static String RedactEmailDialog_replacementColumnName;
+
+
+	public static String RedactEmailDialog_titleArea_message;
+
+
+	public static String RedactEmailDialog_titleArea_title;
+
+
+	public static String RedactEmailDialog_validationErrorDialog_noAddressGivenMessage;
+
+
+	public static String RedactEmailDialog_validationErrorDialog_replacmentWithoutAddressMessage;
+
+
+	public static String RedactEmailDialog_validationErrorDialog_title;
+
+
 	public static String RedateAllFollowingCommitsHandler_alreadyPushedToRemoteDialog_dontRedateButton;
 
 
