@@ -1,4 +1,4 @@
-package de.empri.devops.gitprivacy.preferences;
+package de.empri.devops.gitprivacy.preferences.initialization;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -31,14 +31,14 @@
          type="org.eclipse.egit.core.internal.IRepositoryCommit">
       </propertyTester>
       <propertyTester
-         class="de.empri.devops.gitprivacy.preferences.HasBeenInitializedPropertyTester"
+         class="de.empri.devops.gitprivacy.preferences.initialization.HasBeenInitializedPropertyTester"
          id="de.empri.devops.gitprivacy.HasBeenInitializedPropertyTester"
          namespace="GitRepositoriesSelection"
          properties="hasBeenInitialized"
          type="org.eclipse.egit.ui.internal.repository.tree.RepositoryNode">
       </propertyTester>
       <propertyTester
-         class="de.empri.devops.gitprivacy.preferences.HasBeenInitializedPropertyTester"
+         class="de.empri.devops.gitprivacy.preferences.initialization.HasBeenInitializedPropertyTester"
          id="de.empri.devops.gitprivacy.HasBeenInitializedPropertyTesterCommit"
          namespace="GitHistorySelection"
          properties="hasBeenInitialized"
