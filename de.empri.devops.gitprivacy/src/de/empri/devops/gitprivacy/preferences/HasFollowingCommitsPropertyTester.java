@@ -36,7 +36,7 @@ public class HasFollowingCommitsPropertyTester extends PropertyTester {
 		try {
 			headId = repository.resolve(Constants.HEAD);
 		} catch (RevisionSyntaxException | IOException e) {
-			logger.error(hexshaCommit, e);
+			logger.error(e.getMessage(), e);
 			return false;
 		}
 		try (RevWalk walk = new RevWalk(repository)) {
@@ -53,7 +53,7 @@ public class HasFollowingCommitsPropertyTester extends PropertyTester {
 				return false;
 			}
 		} catch (IOException e1) {
-			logger.error(headId.getName(), e1);
+			logger.error(e1.getMessage(), e1);
 		}
 
 		String hexshaHead = headId.getName();

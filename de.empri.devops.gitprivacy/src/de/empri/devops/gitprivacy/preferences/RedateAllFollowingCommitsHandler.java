@@ -72,7 +72,7 @@ public class RedateAllFollowingCommitsHandler {
 			try {
 				branchName = repository.getBranch();
 			} catch (IOException e) {
-				logger.error("", e); //$NON-NLS-1$
+				logger.error(e.getMessage(), e); // $NON-NLS-1$
 				return;
 			}
 			withForce = false;
@@ -103,7 +103,7 @@ public class RedateAllFollowingCommitsHandler {
 					}
 				}
 			} catch (GitAPIException | RevisionSyntaxException | IOException e) {
-				logger.error("", e); //$NON-NLS-1$
+				logger.error(e.getMessage(), e); // $NON-NLS-1$
 				return;
 			}
 
