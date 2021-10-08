@@ -108,7 +108,7 @@ public class InitializeCommandHandler {
 					NLS.bind(UIText.InitializeCommandHandler_SuccessDialog_Message, sb.toString()));
 		} catch (IOException e) {
 			// TODO git-privacy not installed?
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return;
 	}
