@@ -16,11 +16,14 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.egit.ui.internal.repository.tree.RepositoryNode;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.notifications.AbstractNotificationPopup;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import de.empri.devops.gitprivacy.preferences.ProcessService;
@@ -102,15 +105,39 @@ public class InitializeCommandHandler {
 
 			StringBuilder sb = new StringBuilder();
 			for (String hookName : state.newlyInstalled) {
-				sb.append("- ").append(hookName).append("\n");
+				sb.append("• ").append(hookName).append("\n");
 			}
-			MessageDialog.openInformation(activeShell, UIText.InitializeCommandHandler_SuccessDialog_Title,
-					NLS.bind(UIText.InitializeCommandHandler_SuccessDialog_Message, sb.toString()));
+			new NotificaionPopup(s.getDisplay(), UIText.InitializeCommandHandler_SuccessNotification_Title,
+					NLS.bind(UIText.InitializeCommandHandler_SuccessNotification_Message, sb.toString())).open();
 		} catch (IOException e) {
 			// TODO git-privacy not installed?
 			logger.error(e.getMessage(), e);
 		}
 		return;
+	}
+
+	private class NotificaionPopup extends AbstractNotificationPopup {
+
+		private final String title;
+		private final String message;
+
+		public NotificaionPopup(Display display, String title, String message) {
+			super(display);
+			this.title = title;
+			this.message = message;
+		}
+
+		@Override
+		protected void createContentArea(Composite parent) {
+			Label label = new Label(parent, SWT.WRAP);
+			label.setText(message);
+		}
+
+		@Override
+		protected String getPopupShellTitle() {
+			return title;
+		}
+
 	}
 
 }

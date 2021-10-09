@@ -71,9 +71,9 @@ public class UIText extends NLS {
 
 	public static String InitializeCommandHandler_ErrorDialog_Title;
 
-	public static String InitializeCommandHandler_SuccessDialog_Message;
+	public static String InitializeCommandHandler_SuccessNotification_Message;
 
-	public static String InitializeCommandHandler_SuccessDialog_Title;
+	public static String InitializeCommandHandler_SuccessNotification_Title;
 
 	public static String InitializeGitPrivacyConfigDialog_cancelButton;
 
