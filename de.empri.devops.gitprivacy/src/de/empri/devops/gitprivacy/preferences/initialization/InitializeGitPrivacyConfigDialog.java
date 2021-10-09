@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.egit.core.RepositoryUtil;
+import org.eclipse.egit.ui.Activator;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -24,12 +25,15 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.FrameworkUtil;
 
 import de.empri.devops.gitprivacy.preferences.UIText;
+import de.empri.devops.gitprivacy.preferences.shared.Crypto;
+import de.empri.devops.gitprivacy.preferences.shared.ManagesKeyStorage;
 
 public class InitializeGitPrivacyConfigDialog extends TitleAreaDialog {
 
@@ -46,6 +50,8 @@ public class InitializeGitPrivacyConfigDialog extends TitleAreaDialog {
 	private Image image;
 	private Repository repository;
 	private ILog logger;
+	private Button encrypt;
+	private ManagesKeyStorage managesKeyStorage;
 
 	protected InitializeGitPrivacyConfigDialog(Shell parentShell, Repository repository) {
 		super(parentShell);
@@ -62,6 +68,7 @@ public class InitializeGitPrivacyConfigDialog extends TitleAreaDialog {
 				RepositoryUtil.INSTANCE.getRepositoryName(repository)));
 		image = ImageDescriptor.createFromURL(FrameworkUtil.getBundle(getClass()).getEntry("icons/empri-logo.png")) //$NON-NLS-1$
 				.createImage();
+		managesKeyStorage = new ManagesKeyStorage(repository.getDirectory());
 		setTitleImage(image);
 		setMessage(UIText.InitializeGitPrivacyConfigDialog_titleArea_message, IMessageProvider.INFORMATION);
 	}
@@ -102,8 +109,12 @@ public class InitializeGitPrivacyConfigDialog extends TitleAreaDialog {
 				.minSize(convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH), 0).grab(true, true)
 				.applyTo(main);
 
+		Group gitConfigGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
+		gitConfigGroup.setLayout(new GridLayout(1, false));
+		gitConfigGroup.setText("Git config");
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(gitConfigGroup);
 
-		modifyCommitDate = createCheckBox(main, UIText.PrivacyPreferencePage_modify_commit_date);
+		modifyCommitDate = createCheckBox(gitConfigGroup, UIText.PrivacyPreferencePage_modify_commit_date);
 		modifyCommitDate.setSelection(true);
 		GridDataFactory.fillDefaults().applyTo(modifyCommitDate);
 		modifyCommitDate.addSelectionListener(widgetSelectedAdapter(e -> {
@@ -115,57 +126,64 @@ public class InitializeGitPrivacyConfigDialog extends TitleAreaDialog {
 			verifyInput();
 		}));
 
-		modifyCommitMonth = createCheckBox(main, UIText.PrivacyPreferencePage_modify_commit_month);
+		modifyCommitMonth = createCheckBox(gitConfigGroup, UIText.PrivacyPreferencePage_modify_commit_month);
 		GridDataFactory.fillDefaults().indent(LayoutConstants.getIndent(), 0)
 				.applyTo(modifyCommitMonth);
 		modifyCommitMonth.setEnabled(modifyCommitDate.getSelection());
 		modifyCommitMonth.addSelectionListener(widgetSelectedAdapter(e -> verifyInput()));
 
-		modifyCommitDay = createCheckBox(main, UIText.PrivacyPreferencePage_modify_commit_day);
+		modifyCommitDay = createCheckBox(gitConfigGroup, UIText.PrivacyPreferencePage_modify_commit_day);
 		GridDataFactory.fillDefaults().indent(LayoutConstants.getIndent(), 0).applyTo(modifyCommitDay);
 		modifyCommitDay.setEnabled(modifyCommitDate.getSelection());
 		modifyCommitDay.addSelectionListener(widgetSelectedAdapter(e -> verifyInput()));
 
-		modifyCommitHour = createCheckBox(main, UIText.PrivacyPreferencePage_modify_commit_hour);
+		modifyCommitHour = createCheckBox(gitConfigGroup, UIText.PrivacyPreferencePage_modify_commit_hour);
 		modifyCommitHour.setSelection(true);
 		GridDataFactory.fillDefaults().indent(LayoutConstants.getIndent(), 0).applyTo(modifyCommitHour);
 		modifyCommitHour.setEnabled(modifyCommitDate.getSelection());
 		modifyCommitHour.addSelectionListener(widgetSelectedAdapter(e -> verifyInput()));
 
-		modifyCommitMinute = createCheckBox(main, UIText.PrivacyPreferencePage_modify_commit_minute);
+		modifyCommitMinute = createCheckBox(gitConfigGroup, UIText.PrivacyPreferencePage_modify_commit_minute);
 		modifyCommitMinute.setSelection(true);
 		GridDataFactory.fillDefaults().indent(LayoutConstants.getIndent(), 0).applyTo(modifyCommitMinute);
 		modifyCommitMinute.setEnabled(modifyCommitDate.getSelection());
 		modifyCommitMinute.addSelectionListener(widgetSelectedAdapter(e -> verifyInput()));
 
-		modifyCommitSecond = createCheckBox(main, UIText.PrivacyPreferencePage_modify_commit_second);
+		modifyCommitSecond = createCheckBox(gitConfigGroup, UIText.PrivacyPreferencePage_modify_commit_second);
 		modifyCommitSecond.setSelection(true);
 		GridDataFactory.fillDefaults().indent(LayoutConstants.getIndent(), 0).applyTo(modifyCommitSecond);
 		modifyCommitSecond.setEnabled(modifyCommitDate.getSelection());
 		modifyCommitSecond.addSelectionListener(widgetSelectedAdapter(e -> verifyInput()));
 
-		limitCommitTime = createCheckBox(main, UIText.PrivacyPreferencePage_limit_commit_time);
+		limitCommitTime = createCheckBox(gitConfigGroup, UIText.PrivacyPreferencePage_limit_commit_time);
 		limitCommitTime.addSelectionListener(widgetSelectedAdapter(e -> {
 			lowerLimit.setEnabled(limitCommitTime.getSelection());
 			upperLimit.setEnabled(limitCommitTime.getSelection());
 			verifyInput();
 		}));
 
-		Label label = new Label(main, SWT.NONE);
+		Label label = new Label(gitConfigGroup, SWT.NONE);
 	    label.setText(UIText.PrivacyPreferencePage_lower_commit_time_limit);
 		GridDataFactory.fillDefaults().indent(LayoutConstants.getIndent(), 0).applyTo(label);
-		lowerLimit = new Text(main, SWT.BORDER);
+		lowerLimit = new Text(gitConfigGroup, SWT.BORDER);
 		GridDataFactory.fillDefaults().indent(LayoutConstants.getIndent(), 0).applyTo(lowerLimit);
 		lowerLimit.setEnabled(limitCommitTime.getSelection());
 		lowerLimit.addModifyListener(e -> verifyInput());
 
-		label = new Label(main, SWT.NONE);
+		label = new Label(gitConfigGroup, SWT.NONE);
 		label.setText(UIText.PrivacyPreferencePage_upper_commit_time_limit);
 		GridDataFactory.fillDefaults().indent(LayoutConstants.getIndent(), 0).applyTo(label);
-		upperLimit = new Text(main, SWT.BORDER);
+		upperLimit = new Text(gitConfigGroup, SWT.BORDER);
 		GridDataFactory.fillDefaults().indent(LayoutConstants.getIndent(), 0).applyTo(upperLimit);
 		upperLimit.setEnabled(limitCommitTime.getSelection());
 		upperLimit.addModifyListener(e -> verifyInput());
+
+		Group encryptionGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
+		encryptionGroup.setLayout(new GridLayout(1, false));
+		encryptionGroup.setText("Encryption");
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(encryptionGroup);
+		encrypt = createCheckBox(encryptionGroup, "&Create encryption key and encrypt original commit dates");
+		GridDataFactory.fillDefaults().applyTo(encrypt);
 
 		return main;
 	}
@@ -250,7 +268,17 @@ public class InitializeGitPrivacyConfigDialog extends TitleAreaDialog {
 			try {
 				gitConfig.save();
 			} catch (IOException e) {
-				logger.error(e.getMessage(), e);
+				Activator.showError("Failed to save Git configuration", e);
+				return;
+			}
+			
+			if (encrypt.getSelection()) {
+				try {
+					managesKeyStorage.store(Crypto.generateKey());
+				} catch (IOException e) {
+					Activator.showError("Failed to create encryption key", e);
+					return;
+				}
 			}
 		}
 		super.buttonPressed(buttonId);

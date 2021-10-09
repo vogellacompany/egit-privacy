@@ -75,9 +75,6 @@ public class UIText extends NLS {
 
 	public static String InitializeCommandHandler_SuccessNotification_Title;
 
-	public static String InitializeGitPrivacyConfigDialog_cancelButton;
-
-
 	public static String InitializeGitPrivacyConfigDialog_lowerLimitErrorMessage;
 
 
@@ -112,9 +109,6 @@ public class UIText extends NLS {
 
 
 	public static String RedactEmailDialog_dialogTitle;
-
-
-	public static String RedactEmailDialog_dontRedactButtonText;
 
 
 	public static String RedactEmailDialog_emailToRedactColumnName;
