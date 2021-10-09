@@ -83,7 +83,7 @@ public class InitializeGitPrivacyConfigDialog extends TitleAreaDialog {
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		createButton(parent, IDialogConstants.OK_ID, UIText.InitializeGitPrivacyConfigDialog_okayButton, true);
-		createButton(parent, IDialogConstants.CANCEL_ID, UIText.InitializeGitPrivacyConfigDialog_cancelButton, false);
+		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 	}
 
 	@Override
