@@ -52,6 +52,7 @@ public class RedactEmailDialog extends TitleAreaDialog {
 	private TableViewer v;
 	private Repository repository;
 	private Image image;
+	private List<EMail> addressesToRedact;
 
 	protected RedactEmailDialog(Shell parentShell, Repository repository) {
 		super(parentShell);
@@ -231,11 +232,13 @@ public class RedactEmailDialog extends TitleAreaDialog {
 		if (image != null) {
 			image.dispose();
 		}
+		addressesToRedact = Arrays.stream(v.getTable().getItems()).map(item -> (EMail) item.getData())
+				.collect(Collectors.toList());
 		return super.close();
 	}
 
-	public List<EMail> toRedact() {
-		return Arrays.stream(v.getTable().getItems()).map(item -> (EMail) item.getData()).collect(Collectors.toList());
+	public List<EMail> getAddressesToRedact() {
+		return addressesToRedact;
 	}
 
 	private class EditEmailColumn extends EditingSupport {
