@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import javax.inject.Named;
 
@@ -56,7 +57,7 @@ public class RedactEmailHandler {
 			Job job = Job.create("Redact E-Mail Addresses", (ICoreRunnable) monitor -> {
 				StringBuilder sb = new StringBuilder();
 				sb.append("git-privacy redact-email");
-				redactEmailDialog.toRedact().forEach(email -> {
+				redactEmailDialog.getAddressesToRedact().forEach(email -> {
 					sb.append(" ");
 					sb.append(email.address);
 					if (!email.replacement.isBlank()) {
@@ -69,10 +70,10 @@ public class RedactEmailHandler {
 							node.getRepository().getDirectory());
 					process.waitFor(PROCESS_TIMEOUT_IN_SEC, TimeUnit.SECONDS);
 					try (BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-						System.out.println(input);
+						logger.info(input.lines().collect(Collectors.joining()));
 					}
 					try (BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-						System.out.println(error);
+						logger.error(error.lines().collect(Collectors.joining()));
 					}
 				} catch (IOException | InterruptedException e) {
 					// TODO Auto-generated catch block
