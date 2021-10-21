@@ -11,6 +11,7 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.util.GitDateFormatter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -50,24 +51,24 @@ public class ShowOriginalCommitDateDialog extends Dialog {
 
 		Group authorDateGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
 		authorDateGroup.setText("Auhtored Date");
-		GridLayoutFactory.fillDefaults().applyTo(authorDateGroup);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(authorDateGroup);
 		GridLayoutFactory.swtDefaults().applyTo(authorDateGroup);
+		addMargins(authorDateGroup);
 		Label authorDate = new Label(authorDateGroup, SWT.NONE);
 		authorDate.setText(ISO_DATE_FORMATTER.formatDate(commit.getAuthorIdent()));
 
 		Group realAuthorDateGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
 		realAuthorDateGroup.setText("Real Authored Date");
-		GridLayoutFactory.fillDefaults().applyTo(realAuthorDateGroup);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(realAuthorDateGroup);
 		GridLayoutFactory.swtDefaults().applyTo(realAuthorDateGroup);
+		addMargins(realAuthorDateGroup);
 		Label realAuthorDate = new Label(realAuthorDateGroup, SWT.NONE);
 
 		Group commitDateGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
 		commitDateGroup.setText("Committed Date");
-		GridLayoutFactory.fillDefaults().applyTo(commitDateGroup);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(commitDateGroup);
 		GridLayoutFactory.swtDefaults().applyTo(commitDateGroup);
+		addMargins(commitDateGroup);
 		Label commitDate = new Label(commitDateGroup, SWT.NONE);
 		commitDate.setText(ISO_DATE_FORMATTER.formatDate(commit.getCommitterIdent()));
 
@@ -76,6 +77,7 @@ public class ShowOriginalCommitDateDialog extends Dialog {
 		GridLayoutFactory.fillDefaults().applyTo(realCommitDateGroup);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(realCommitDateGroup);
 		GridLayoutFactory.swtDefaults().applyTo(realCommitDateGroup);
+		addMargins(realCommitDateGroup);
 		Label realCommitDate = new Label(realCommitDateGroup, SWT.NONE);
 
 		DateTimeFormatter.ofPattern(GIT_ISO_TIME_PATTERN);
@@ -90,6 +92,12 @@ public class ShowOriginalCommitDateDialog extends Dialog {
 		}
 
 		return main;
+	}
+
+	private void addMargins(Group group) {
+		GridLayout layout = (GridLayout) group.getLayout();
+		layout.marginWidth = 8;
+		layout.marginHeight = 8;
 	}
 
 	@Override

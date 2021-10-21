@@ -112,6 +112,7 @@ public class InitializeGitPrivacyConfigDialog extends TitleAreaDialog {
 		Group gitConfigGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
 		gitConfigGroup.setLayout(new GridLayout(1, false));
 		gitConfigGroup.setText("Git config");
+		addMargins(gitConfigGroup);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(gitConfigGroup);
 
 		modifyCommitDate = createCheckBox(gitConfigGroup, UIText.PrivacyPreferencePage_modify_commit_date);
@@ -180,12 +181,19 @@ public class InitializeGitPrivacyConfigDialog extends TitleAreaDialog {
 
 		Group encryptionGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
 		encryptionGroup.setLayout(new GridLayout(1, false));
+		addMargins(encryptionGroup);
 		encryptionGroup.setText("Encryption");
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(encryptionGroup);
 		encrypt = createCheckBox(encryptionGroup, "&Create encryption key and encrypt original commit dates");
 		GridDataFactory.fillDefaults().applyTo(encrypt);
 
 		return main;
+	}
+
+	private void addMargins(Group group) {
+		GridLayout layout = (GridLayout) group.getLayout();
+		layout.marginWidth = 8;
+		layout.marginHeight = 8;
 	}
 
 	private void verifyInput() {
