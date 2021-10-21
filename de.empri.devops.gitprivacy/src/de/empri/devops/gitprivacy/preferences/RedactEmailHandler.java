@@ -76,8 +76,7 @@ public class RedactEmailHandler {
 						logger.error(error.lines().collect(Collectors.joining()));
 					}
 				} catch (IOException | InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				}
 			});
 			job.schedule();
