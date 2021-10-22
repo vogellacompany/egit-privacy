@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import org.eclipse.egit.core.RepositoryUtil;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -150,6 +149,7 @@ public class RedactEmailDialog extends TitleAreaDialog {
 				v.add(new EMail());
 				table.setTopIndex(table.getItemCount());
 				table.select(table.getItemCount() - 1);
+				verify();
 			}
 		});
 
@@ -168,31 +168,29 @@ public class RedactEmailDialog extends TitleAreaDialog {
 						v.remove(obj);
 					}
 				}
+				verify();
 			}
 		});
 
 		return main;
 	}
 
-	@Override
-	protected void buttonPressed(int buttonId) {
-		if (IDialogConstants.OK_ID == buttonId) {
-			if (noEmailToReplaceGiven()) {
-				MessageDialog.openError(getParentShell(), UIText.RedactEmailDialog_validationErrorDialog_title,
-						UIText.RedactEmailDialog_validationErrorDialog_noAddressGivenMessage);
-				return;
-			}
-			if (rowWithReplacementButNoEmailExists()) {
-				MessageDialog.openError(getParentShell(), UIText.RedactEmailDialog_validationErrorDialog_title,
-						UIText.RedactEmailDialog_validationErrorDialog_replacmentWithoutAddressMessage);
-				return;
-			}
-			okPressed();
-		} else if (IDialogConstants.CANCEL_ID == buttonId) {
-			cancelPressed();
+	private void verify() {
+		if (noEmailToReplaceGiven()) {
+			setErrorMessage(UIText.RedactEmailDialog_validationErrorDialog_noAddressGivenMessage);
+		} else if (rowWithReplacementButNoEmailExists()) {
+			setErrorMessage(UIText.RedactEmailDialog_validationErrorDialog_replacmentWithoutAddressMessage);
+		} else {
+			setErrorMessage(null);
 		}
 	}
 
+	@Override
+	public void setErrorMessage(String newErrorMessage) {
+		super.setErrorMessage(newErrorMessage);
+		boolean errorMessageSet = newErrorMessage != null;
+		getButton(IDialogConstants.OK_ID).setEnabled(!errorMessageSet);
+	}
 
 	private boolean noEmailToReplaceGiven() {
 		return !Arrays.stream(v.getTable().getItems()).map(item -> (EMail) item.getData())
@@ -208,6 +206,7 @@ public class RedactEmailDialog extends TitleAreaDialog {
 	protected void createButtonsForButtonBar(Composite parent) {
 		createButton(parent, IDialogConstants.OK_ID, UIText.RedactEmailDialog_redactButtonText, true);
 		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+		verify();
 	}
 
 	@Override
@@ -266,7 +265,9 @@ public class RedactEmailDialog extends TitleAreaDialog {
 		protected void setValue(Object element, Object value) {
 			((EMail) element).address = value.toString();
 			getViewer().update(element, null);
+			verify();
 		}
+
 
 	}
 
@@ -299,6 +300,7 @@ public class RedactEmailDialog extends TitleAreaDialog {
 			}
 			((EMail) element).replacement = string;
 			getViewer().update(element, null);
+			verify();
 		}
 
 	}
