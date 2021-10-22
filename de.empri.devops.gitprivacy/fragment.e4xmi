@@ -30,7 +30,7 @@
       <children xsi:type="menu:DirectMenuItem" xmi:id="_vzmvoN5UEeuAGuBJz0IDMQ" elementId="de.empri.devops.gitprivacy.directmenuitem.initializeEgitPrivacy" label="&amp;Initialize EGit-Privacy" iconURI="platform:/plugin/de.empri.devops.gitprivacy/icons/encryption-menu.png" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.initialization.InitializeCommandHandler">
         <visibleWhen xsi:type="ui:CoreExpression" xmi:id="__b9SoN5WEeuAGuBJz0IDMQ" coreExpressionId="de.empri.devops.gitprivacy.menucontribution.initializeEgitPrivay.visible"/>
       </children>
-      <children xsi:type="menu:DirectMenuItem" xmi:id="_pR6zICOTEeywGIzW-Qptfg" elementId="de.empri.devops.gitprivacy.directmenuitem.redactemail" label="Redact Email" iconURI="platform:/plugin/de.empri.devops.gitprivacy/icons/encryption-menu.png" tooltip="Redact Email" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.RedactEmailHandler"/>
+      <children xsi:type="menu:DirectMenuItem" xmi:id="_pR6zICOTEeywGIzW-Qptfg" elementId="de.empri.devops.gitprivacy.directmenuitem.redactemail" label="Redact Email" iconURI="platform:/plugin/de.empri.devops.gitprivacy/icons/redact-email.png" tooltip="Redact Email" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.RedactEmailHandler"/>
     </elements>
   </fragments>
 </fragment:ModelFragments>

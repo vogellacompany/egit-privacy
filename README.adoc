@@ -124,3 +124,4 @@ Install the plug-in from the update site via menu:Help[Install New Software... >
 === Attribution
 
 - `icons/encryption-menu.png` by https://freeicons.io/office-and-workstation-icons-4/data-encryption-icon-18819[Free Preloaders], Licensed under https://creativecommons.org/licenses/by/3.0/[Attribution 3.0 Unported (CC BY 3.0) ], used unchanged
+- `icons/redact-email.png` created from https://freeicons.io/user-interface-22/mail-envelope-message-inbox-email-icon-123655[ColourCreatype], Licensed under https://creativecommons.org/licenses/by/3.0/[Attribution 3.0 Unported (CC BY 3.0) ] and https://freeicons.io/regular-life-icons/pencil-icon-17870[Anu Rocks], Licensed under https://creativecommons.org/licenses/by/3.0/[Attribution 3.0 Unported (CC BY 3.0) ]
