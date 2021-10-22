@@ -293,7 +293,11 @@ public class RedactEmailDialog extends TitleAreaDialog {
 
 		@Override
 		protected void setValue(Object element, Object value) {
-			((EMail) element).replacement = value.toString();
+			String string = value.toString();
+			if (string.isBlank()) {
+				string = EMail.REPLACEMENT_DEFAULT;
+			}
+			((EMail) element).replacement = string;
 			getViewer().update(element, null);
 		}
 
@@ -301,8 +305,9 @@ public class RedactEmailDialog extends TitleAreaDialog {
 
 	protected class EMail {
 
+		public static final String REPLACEMENT_DEFAULT = "noreply@gitprivacy.invalid";
 		String address = ""; //$NON-NLS-1$
-		String replacement = "noreply@gitprivacy.invalid"; //$NON-NLS-1$
+		String replacement = REPLACEMENT_DEFAULT;
 
 	}
 	
