@@ -4,6 +4,12 @@
 	<artifactId>egit-privacy.root</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<scm>
+        <connection>scm:git:git@github.com:vogellacompany/egit-privacy.git</connection>
+        <developerConnection>scm:git:git@github.com:vogellacompany/egit-privacy.git</developerConnection>
+       <tag>${project.version}</tag>
+  </scm>
+	
 
 	<properties>
 		<tycho.version>2.5.0</tycho.version>
@@ -44,7 +50,7 @@
 						<artifact>
 							<groupId>egit-privacy</groupId>
 							<artifactId>target-platform</artifactId>
-							<version>1.0.0-SNAPSHOT</version>
+							<version>${project.version}</version>
 						</artifact>
 					</target>
 					<!-- end::target-definition[] -->
@@ -66,6 +72,34 @@
 						</environment>
 					</environments>
 				</configuration>
+			</plugin>
+			<plugin>
+			   <groupId>org.apache.maven.plugins</groupId>
+			   <artifactId>maven-release-plugin</artifactId>
+			   <version>2.5.3</version>
+			   <configuration>
+			     <preparationGoals>org.eclipse.tycho:tycho-versions-plugin:${tycho.version}:update-eclipse-metadata org.apache.maven.plugins:maven-scm-plugin:add org.apache.maven.plugins:maven-scm-plugin:checkin</preparationGoals>
+			     <completionGoals>org.eclipse.tycho:tycho-versions-plugin:${tycho.version}:update-eclipse-metadata org.apache.maven.plugins:maven-scm-plugin:add org.apache.maven.plugins:maven-scm-plugin:checkin</completionGoals>
+			   </configuration>
+			</plugin>
+			<plugin>
+			   <groupId>org.apache.maven.plugins</groupId>
+			   <artifactId>maven-scm-plugin</artifactId>
+			   <version>1.12.0</version>
+			   <executions>
+			     <execution>
+			       <id>default-cli</id>
+			       <goals>
+			         <goal>add</goal>
+			         <goal>checkin</goal>
+			       </goals>
+			       <configuration>
+			         <includes>**/META-INF/MANIFEST.MF,**/.polyglot.META-INF,**/feature.xml,**/.polyglot.feature.xml,**/*.product,**/category.xml</includes>
+			         <excludes>**/target/**</excludes>
+			       <message>Changing the version to reflect the pom versions for the release</message>
+			       </configuration>
+			     </execution>
+			   </executions>
 			</plugin>
 		</plugins>
 	</build>
