@@ -223,7 +223,7 @@ public class RedactEmailDialog extends TitleAreaDialog {
 		image = ImageDescriptor.createFromURL(FrameworkUtil.getBundle(getClass()).getEntry("icons/empri-logo.png")) //$NON-NLS-1$
 				.createImage();
 		setTitleImage(image);
-		setMessage(UIText.RedactEmailDialog_titleArea_message, IMessageProvider.INFORMATION);
+		setMessage(UIText.RedactEmailDialog_titleArea_message, IMessageProvider.WARNING);
 	}
 
 	@Override
