@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
 
+python3 -m http.server &
+PYTHON_PID=$!
+
 mvn clean verify
+
+kill $PYTHON_PID
