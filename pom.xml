@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>egit-privacy</groupId>
 	<artifactId>egit-privacy.root</artifactId>
-	<version>2.0.0</version>
+	<version>2.1.0</version>
 	<packaging>pom</packaging>
 	<scm>
         <connection>scm:git:git@github.com:vogellacompany/egit-privacy.git</connection>
@@ -51,7 +51,7 @@
 						<artifact>
 							<groupId>egit-privacy</groupId>
 							<artifactId>target-platform</artifactId>
-							<version>2.0.0</version>
+							<version>2.1.0</version>
 						</artifact>
 					</target>
 					<!-- end::target-definition[] -->
