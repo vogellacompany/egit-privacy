@@ -13,7 +13,9 @@
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_u7mfYKKlEeuyN8YqPFRFww" featurename="toolBarContributions" parentElementId="xpath:/">
     <elements xsi:type="menu:ToolBarContribution" xmi:id="_yA9t0KKlEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.toolbarcontribution.0" parentId="org.eclipse.team.ui.GenericHistoryView">
-      <children xsi:type="menu:DirectToolItem" xmi:id="_zGaS8KKlEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.directtoolitem.showrealcommitdates" label="Show Real Commit Dates" iconURI="platform:/plugin/de.empri.devops.gitprivacy/icons/encryption-menu.png" tooltip="Show real commit dates" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.ShowRealGitDatesToolbarHandler"/>
+      <children xsi:type="menu:DirectToolItem" xmi:id="_zGaS8KKlEeuyN8YqPFRFww" elementId="de.empri.devops.gitprivacy.directtoolitem.showrealcommitdates" label="Show Real Commit Dates" iconURI="platform:/plugin/de.empri.devops.gitprivacy/icons/encryption-menu.png" tooltip="Show real commit dates" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.ShowRealGitDatesToolbarHandler">
+        <persistedState key="persistState" value="false"/>
+      </children>
     </elements>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_yBVr0KKmEeuyN8YqPFRFww" featurename="menuContributions" parentElementId="xpath:/">
@@ -23,14 +25,18 @@
         <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_fAcaIKdOEeu98-EIyFPHtg" coreExpressionId="de.empri.devops.gitprivacy.githistory.menucontribution.visible"/>
       </children>
       <children xsi:type="menu:DirectMenuItem" xmi:id="_YyMjcB7UEeywGIzW-Qptfg" elementId="de.empri.devops.gitprivacy.directmenuitem.redateallfollowingcommits" label="&amp;Redate all following commits" iconURI="platform:/plugin/de.empri.devops.gitprivacy/icons/encryption-menu.png" tooltip="Redate all following commits" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.RedateAllFollowingCommitsHandler">
+        <persistedState key="persistState" value="false"/>
         <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_fWtHYB7WEeywGIzW-Qptfg" coreExpressionId="de.empri.devops.gitprivacy.menucontribution.redateAllFollowingCommits.visible"/>
       </children>
     </elements>
     <elements xsi:type="menu:MenuContribution" xmi:id="_l0Ea0N5IEeueLbs_zjcMXQ" elementId="de.empri.devops.gitprivacy.menucontribution.initializeEgitPrivay" positionInParent="after=repo-5" parentId="org.eclipse.egit.ui.RepositoriesView">
       <children xsi:type="menu:DirectMenuItem" xmi:id="_vzmvoN5UEeuAGuBJz0IDMQ" elementId="de.empri.devops.gitprivacy.directmenuitem.initializeEgitPrivacy" label="&amp;Initialize EGit-Privacy" iconURI="platform:/plugin/de.empri.devops.gitprivacy/icons/encryption-menu.png" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.initialization.InitializeCommandHandler">
+        <persistedState key="persistState" value="false"/>
         <visibleWhen xsi:type="ui:CoreExpression" xmi:id="__b9SoN5WEeuAGuBJz0IDMQ" coreExpressionId="de.empri.devops.gitprivacy.menucontribution.initializeEgitPrivay.visible"/>
       </children>
-      <children xsi:type="menu:DirectMenuItem" xmi:id="_pR6zICOTEeywGIzW-Qptfg" elementId="de.empri.devops.gitprivacy.directmenuitem.redactemail" label="Redact Email" iconURI="platform:/plugin/de.empri.devops.gitprivacy/icons/redact-email.png" tooltip="Redact Email" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.RedactEmailHandler"/>
+      <children xsi:type="menu:DirectMenuItem" xmi:id="_pR6zICOTEeywGIzW-Qptfg" elementId="de.empri.devops.gitprivacy.directmenuitem.redactemail" label="Redact Email" iconURI="platform:/plugin/de.empri.devops.gitprivacy/icons/redact-email.png" tooltip="Redact Email" contributionURI="bundleclass://de.empri.devops.gitprivacy/de.empri.devops.gitprivacy.preferences.RedactEmailHandler">
+        <persistedState key="persistState" value="false"/>
+      </children>
     </elements>
   </fragments>
 </fragment:ModelFragments>
